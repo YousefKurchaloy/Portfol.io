@@ -10,7 +10,6 @@ Portfol.io is a dynamic, centralized Content Management System (CMS) designed sp
 This repository was developed as part of the Advanced Internet Computing course, supervised and evaluated by Dr. Salah Safi.
 
 ## Authors
-The project is built by:
 
 * **[Abdallah Tahboub](https://github.com/abdullatahboub)**
 * **[Yaman Alrifai](https://github.com/yamanalrfai)**
