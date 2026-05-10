@@ -143,7 +143,7 @@ The data model is managed via **Entity Framework Core** and utilizes comprehensi
 
 1. **Clone the repository**
    ```bash
-   git clone [https://github.com/YousefKurchaloy/Portfol.io.git](https://github.com/YousefKurchaloy/Portfol.io.git)
+   git clone https://github.com/YousefKurchaloy/Portfol.io.git
    cd Portfol.io
    ```
 2. **Update Database Connection**
