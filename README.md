@@ -112,17 +112,6 @@ erDiagram
     Skill ||--o{ ProjectSkill : "used in"
 ```
 
-## Features
-
-* **Admin CMS Dashboard:** Secure, authenticated backend for full CRUD operations on all portfolio content.
-* **Dynamic Project Showcase:** Filter and display technical builds (e.g., APIs, mobile apps) dynamically linked to the technologies used to build them.
-* **Skills Matrix:** Categorized representation of technical proficiencies (Backend, Frontend, AI, Systems, etc.).
-* **Professional Timeline:** A chronological tracker for industry events, university milestones, and career experiences.
-* **Coding Profiles Integration:** Dedicated section to highlight algorithmic problem-solving handles (e.g., Codeforces, AtCoder).
-* **Visitor Contact System:** Front-end messaging form that feeds directly into the admin dashboard for easy recruiter communication.
-
-## Database Architecture
-
 The data model is managed via **Entity Framework Core** and utilizes comprehensive data annotations and schema configurations. Core entities include:
 
 * **ApplicationUser:** Handles CMS authentication.
