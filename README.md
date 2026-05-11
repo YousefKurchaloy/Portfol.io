@@ -28,8 +28,6 @@ This repository was developed as part of the Advanced Internet Computing course,
 
 ## Database Architecture
 
-The data model is managed via **Entity Framework Core** and utilizes comprehensive data annotations and schema configurations. Core entities include:
-
 ```mermaid
 erDiagram
     ApplicationUser {
