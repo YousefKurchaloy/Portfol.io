@@ -1,50 +1,70 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Portfol.io</title>
-    <script type="importmap"></script>
+    
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link
+    href="https://fonts.googleapis.com/css2?family=Geist:wght@400;600&family=JetBrains+Mono:wght@400;600;700&display=swap"
+    rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+          rel="stylesheet" />
+    
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/Portfol.io.styles.css" asp-append-version="true" />
 </head>
+
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Portfol.io</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
+    <div class="bg-grid-pattern"></div>
+
+    <nav class="navbar navbar-expand-md fixed-top py-2">
+        <div class="container-xl">
+            <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Portfol.io</a>
+            <button class="navbar-toggler border-0 text-accent" data-bs-target="#navbarNav" data-bs-toggle="collapse"
+                    type="button">
+                <span class="material-symbols-outlined">menu</span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item px-3"><a class="nav-link active" href="#projects">Projects</a></li>
+                    <li class="nav-item px-3"><a class="nav-link" href="#skills">Skills</a></li>
+                    <li class="nav-item px-3"><a class="nav-link" href="#timeline">Timeline</a></li>
+                    <li class="nav-item px-3"><a class="nav-link" href="#contact">Contact</a></li>
+                </ul>
+                <div class="d-flex">
+                    <a class="btn-cyber-outline py-1 px-3" href="#" style="font-size: 14px;">&gt; Resume</a>
                 </div>
             </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
+        </div>
+    </nav>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2026 - Portfol.io - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+    @RenderBody()
+
+    <footer class="border-top border-secondary-subtle py-5 mt-auto" style="position: relative; z-index: 10;">
+        <div class="container-xl">
+            <div class="row align-items-center">
+                <div class="col-md-6 text-center text-md-start mb-3 mb-md-0 font-mono text-muted-alt small">
+                    © 2026 Portfol.io // Root Access Granted
+                </div>
+                <div class="col-md-6 text-center text-md-end">
+                    <div class="d-flex justify-content-center justify-content-md-end gap-4 font-mono small">
+                        <a class="text-muted-alt text-decoration-none hover-accent" href="#">GitHub</a>
+                        <a class="text-muted-alt text-decoration-none hover-accent" href="#">LinkedIn</a>
+                        <a class="text-muted-alt text-decoration-none hover-accent" href="#">Email</a>
+                    </div>
+                </div>
+            </div>
         </div>
     </footer>
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
+
 </html>

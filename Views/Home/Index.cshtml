@@ -1,8 +1,88 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Root Access";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<main class="container-xl pb-5">
+    
+    <section class="row align-items-center min-vh-75 py-5 mt-5">
+        <div class="col-12">
+            <div class="font-mono text-muted mb-2 small">
+                <span class="text-secondary-accent">root@portfol.io</span>:<span class="text-accent">~</span>$
+                ./init_profile.sh
+            </div>
+            <h1 class="display-3 text-white mb-4">
+                Yousef<span class="text-accent cursor-blink">_</span>
+            </h1>
+            <div class="border-start border-2 border-secondary-subtle ps-4 mb-5">
+                <p class="h4 text-muted-alt mb-0">
+                    Backend Developer transitioning into <span class="text-accent">AI Application Engineer</span>.
+                </p>
+            </div>
+            <div class="d-flex flex-wrap gap-4">
+                <a class="btn btn-cyber" href="#projects">View Projects</a>
+                <a class="btn btn-cyber-outline" href="#contact">Get in Touch</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-5" id="skills">
+        <div class="section-header">
+            <span class="material-symbols-outlined fs-6">terminal</span>
+            &gt; cat skills_matrix.json
+        </div>
+        <div class="row g-4">
+            <div class="col-md-8">
+                <div class="glass-card p-4 d-flex flex-column">
+                    <h5 class="font-mono text-white mb-3 d-flex align-items-center gap-2 border-top border-accent pt-2">
+                        <span class="material-symbols-outlined fs-6 text-accent">database</span>
+                        Backend Infrastructure
+                    </h5>
+                    <div class="d-flex flex-wrap gap-2 mb-4">
+                        <span
+                        class="badge border border-secondary-subtle rounded-0 font-mono text-muted-alt p-2 fw-normal">Java</span>
+                        <span
+                            class="badge border border-secondary-subtle rounded-0 font-mono text-muted-alt p-2 fw-normal">Spring
+                            Boot</span>
+                            <span
+                                class="badge border border-secondary-subtle rounded-0 font-mono text-muted-alt p-2 fw-normal">ASP.NET
+                                Core</span>
+                            </div>
+                            <div class="mt-auto">
+                                <div class="progress progress-cyber">
+                                    <div class="progress-bar progress-bar-cyber" style="width: 90%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            
+                    <div class="col-md-4">
+                        <div class="glass-card p-4 d-flex flex-column">
+                            <h5
+                                class="font-mono text-white mb-3 d-flex align-items-center gap-2 border-top border-secondary-accent pt-2">
+                                <span class="material-symbols-outlined fs-6 text-secondary-accent">neurology</span>
+                                AI Engineering
+                            </h5>
+                            <div class="d-flex flex-wrap gap-2 mb-4">
+                                <span
+                                    class="badge border border-secondary-subtle rounded-0 font-mono text-muted-alt p-2 fw-normal">Agentic
+                                    AI</span>
+                                    <span
+                                        class="badge border border-secondary-subtle rounded-0 font-mono text-muted-alt p-2 fw-normal">RAG
+                                        Pipelines</span>
+                                    </div>
+                                    <div class="mt-auto">
+                                        <div class="progress progress-cyber">
+                                            <div class="progress-bar"
+                                                 style="width: 60%; background-color: var(--secondary-accent); box-shadow: 0 0 4px rgba(47, 248, 1, 0.5);">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
