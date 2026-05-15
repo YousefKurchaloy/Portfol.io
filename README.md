@@ -11,20 +11,19 @@ This repository was developed as part of the Advanced Internet Computing course,
 
 ## Authors
 
-* **[Abdallah Tahboub](https://github.com/abdullatahboub)**
-* **[Yaman Alrifai](https://github.com/yamanalrfai)**
-* **Mohammed Alhamed**
-* **[Yousef Al-Shishani](https://github.com/YousefKurchaloy)**
-  
+- **[Abdallah Tahboub](https://github.com/abdullatahboub)**
+- **[Yaman Alrifai](https://github.com/yamanalrfai)**
+- **Mohammed Alhamed**
+- **[Yousef Al-Shishani](https://github.com/YousefKurchaloy)**
 
 ## Features
 
-* **Admin CMS Dashboard:** Secure, authenticated backend for full CRUD operations on all portfolio content.
-* **Dynamic Project Showcase:** Filter and display technical builds (e.g., APIs, mobile apps) dynamically linked to the technologies used to build them.
-* **Skills Matrix:** Categorized representation of technical proficiencies (Backend, Frontend, AI, Systems, etc.).
-* **Professional Timeline:** A chronological tracker for industry events, university milestones, and career experiences.
-* **Coding Profiles Integration:** Dedicated section to highlight algorithmic problem-solving handles (e.g., Codeforces, AtCoder).
-* **Visitor Contact System:** Front-end messaging form that feeds directly into the admin dashboard for easy recruiter communication.
+- **Admin CMS Dashboard:** Secure, authenticated backend for full CRUD operations on all portfolio content.
+- **Dynamic Project Showcase:** Filter and display technical builds (e.g., APIs, mobile apps) dynamically linked to the technologies used to build them.
+- **Skills Matrix:** Categorized representation of technical proficiencies (Backend, Frontend, AI, Systems, etc.).
+- **Professional Timeline:** A chronological tracker for industry events, university milestones, and career experiences.
+- **Coding Profiles Integration:** Dedicated section to highlight algorithmic problem-solving handles (e.g., Codeforces, AtCoder).
+- **Visitor Contact System:** Front-end messaging form that feeds directly into the admin dashboard for easy recruiter communication.
 
 ## Database Architecture
 
@@ -34,7 +33,10 @@ erDiagram
         int Id PK
         string Username
         string Email
-        string PasswordHash
+        string JobTitle
+        string Bio
+        string Password
+        int AvailabilityStatus
     }
 
     Project {
@@ -49,14 +51,9 @@ erDiagram
     Skill {
         int Id PK
         string Name
-        int Category "Enum: SkillCategory"
+        int Category
         int ProficiencyLevel
         int ApplicationUserId FK
-    }
-
-    ProjectSkill {
-        int ProjectId PK, FK
-        int SkillId PK, FK
     }
 
     TimelineEvent {
@@ -82,7 +79,7 @@ erDiagram
         int Id PK
         string PlatformName
         string UserHandle
-        int MaxRating
+        string Rank
         int ApplicationUserId FK
     }
 
@@ -97,34 +94,52 @@ erDiagram
         int ApplicationUserId FK
     }
 
-    %% Core 1-to-Many Relationships tying the system to the Admin User
-    ApplicationUser ||--o{ Project : "manages"
-    ApplicationUser ||--o{ Skill : "possesses"
-    ApplicationUser ||--o{ TimelineEvent : "experiences"
-    ApplicationUser ||--o{ Credential : "earns"
-    ApplicationUser ||--o{ CodingProfile : "owns"
+    ProjectSkill {
+        int Id PK
+        string VersionUsed
+        int ProjectId FK
+        int SkillId FK
+    }
+
+    CredentialSkill {
+        int Id PK
+        boolean IsCoreFocus
+        int CredentialId FK
+        int SkillId FK
+    }
+
+    %% Relationships
+    ApplicationUser ||--o{ Project : "has"
+    ApplicationUser ||--o{ Skill : "has"
+    ApplicationUser ||--o{ TimelineEvent : "has"
+    ApplicationUser ||--o{ Credential : "has"
+    ApplicationUser ||--o{ CodingProfile : "has"
     ApplicationUser ||--o{ ContactMessage : "receives"
 
-    %% The Many-to-Many Relationship via the Junction Table
-    Project ||--o{ ProjectSkill : "contains"
+    %% Many-to-Many Join Tables
+    Project ||--o{ ProjectSkill : "includes"
     Skill ||--o{ ProjectSkill : "used in"
+
+    Credential ||--o{ CredentialSkill : "validates"
+    Skill ||--o{ CredentialSkill : "validated by"
 ```
 
 The data model is managed via **Entity Framework Core** and utilizes comprehensive data annotations and schema configurations. Core entities include:
 
-* **ApplicationUser:** Handles CMS authentication.
-* **Project & Skill:** Connected via a **Many-to-Many** relationship, reflecting how real-world projects utilize multiple technologies, and specific skills apply to multiple projects.
-* **TimelineEvent:** Tracks dates, locations, and details for professional milestones.
-* **Credential:** Verifiable achievements and certificates.
-* **CodingProfile:** Competitive programming statistics.
-* **ContactMessage:** securely stores visitor inquiries.
+- **ApplicationUser:** Handles CMS authentication.
+- **Project & Skill:** Connected via a **Many-to-Many** relationship, reflecting how real-world projects utilize multiple technologies, and specific skills apply to multiple projects.
+- **TimelineEvent:** Tracks dates, locations, and details for professional milestones.
+- **Credential:** Verifiable achievements and certificates.
+- **CodingProfile:** Competitive programming statistics.
+- **ContactMessage:** securely stores visitor inquiries.
 
 ## Getting Started
 
 ### Prerequisites
-* [.NET 10.0 SDK](https://dotnet.microsoft.com/download) (or matching version)
-* Visual Studio 2022 / JetBrains Rider / VS Code
-* SQL Server
+
+- [.NET 10.0 SDK](https://dotnet.microsoft.com/download) (or matching version)
+- Visual Studio 2022 / JetBrains Rider / VS Code
+- SQL Server
 
 ### Installation
 
@@ -134,14 +149,14 @@ The data model is managed via **Entity Framework Core** and utilizes comprehensi
    cd Portfol.io
    ```
 2. **Update Database Connection**
-   Configure your connection string in ```appsettings.json```.
+   Configure your connection string in `appsettings.json`.
 
-4. **Apply EF Core Migrations**
+3. **Apply EF Core Migrations**
    Open your Package Manager Console or terminal and run:
    ```bash
    dotnet ef database update
    ```
-5. **Run the Application**
+4. **Run the Application**
    ```bash
    dotnet run
    ```
