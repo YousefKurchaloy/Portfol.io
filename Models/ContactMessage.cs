@@ -9,20 +9,21 @@ namespace Portfolio.Models
 
         [Required]
         [Display(Name = "Sender Name")]
-        public string SenderName { get; set; }
+        public required string SenderName { get; set; }
 
         [Required]
         [EmailAddress]
         [Display(Name = "Sender Email")]
-        public string SenderEmail { get; set; }
+        public required string SenderEmail { get; set; }
 
         [Required]
         [StringLength(100)]
-        public string Subject { get; set; }
+        public required string Subject { get; set; }
 
         [Required]
         [MaxLength(2000)] 
-        public string Body { get; set; }
+        public required string Body { get; set; }
+
 
         public DateTime SentDate { get; set; } = DateTime.UtcNow;
 

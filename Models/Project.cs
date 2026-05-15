@@ -1,3 +1,4 @@
+using Portfol.io.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -12,22 +13,24 @@ namespace Portfolio.Models
 
         [Required]
         [StringLength(100)]
-        public string Title { get; set; }
+        public required string Title { get; set; }
 
         [Required]
-        public string Description { get; set; }
+        public required string Description { get; set; }
 
         [Url] 
         [Display(Name = "GitHub Repository")] // Annotation 5
-        public string RepositoryUrl { get; set; }
+        public string? RepositoryUrl { get; set; }
 
         [DataType(DataType.Date)]
         [Display(Name = "Completion Date")]
         public DateTime CompletionDate { get; set; }
 
         public int ApplicationUserId { get; set; }
-        public ApplicationUser ApplicationUser { get; set; }
+        public ApplicationUser? ApplicationUser { get; set; }
 
-        public ICollection<Skill> Skills { get; set; } = new List<Skill>();
+
+        public IEnumerable<ProjectSkill>? ProjectSkills { get; set; } 
+
     }
 }

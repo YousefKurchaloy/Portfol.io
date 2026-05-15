@@ -9,22 +9,22 @@ namespace Portfolio.Models
 
         [Required]
         [StringLength(50)] // Annotation 2
-        public string Username { get; set; }
+        public required string Username { get; set; }
 
         [Required]
         [EmailAddress] 
-        public string Email { get; set; }
+        public required string Email { get; set; }
 
         [Required]
         [DataType(DataType.Password)] 
-        public string Password { get; set; }
+        public required string Password { get; set; }
 
         
-        public ICollection<Project> Projects { get; set; } = new List<Project>();
-        public ICollection<Skill> Skills { get; set; } = new List<Skill>();
-        public ICollection<TimelineEvent> TimelineEvents { get; set; } = new List<TimelineEvent>();
-        public ICollection<Credential> Credentials { get; set; } = new List<Credential>();
-        public ICollection<CodingProfile> CodingProfiles { get; set; } = new List<CodingProfile>();
-        public ICollection<ContactMessage> ContactMessages { get; set; } = new List<ContactMessage>();
+        public IEnumerable<Project> Projects { get; set; } = new List<Project>();
+        public IEnumerable<Skill> Skills { get; set; } = new List<Skill>();
+        public IEnumerable<TimelineEvent> TimelineEvents { get; set; } = new List<TimelineEvent>();
+        public IEnumerable<Credential> Credentials { get; set; } = new List<Credential>();
+        public IEnumerable<CodingProfile> CodingProfiles { get; set; } = new List<CodingProfile>();
+        public IEnumerable<ContactMessage> ContactMessages { get; set; } = new List<ContactMessage>();
     }
 }

@@ -8,13 +8,12 @@ namespace Portfolio.Models
         public int Id { get; set; }
 
         [Required]
-        public string Title { get; set; }
+        public required string Title { get; set; }
 
         [Required]
-        
-        public string Organization { get; set; }
+        public required string Organization { get; set; }
 
-        public string Location { get; set; }
+        public string? Location { get; set; }
 
         [DataType(DataType.Date)]
         public DateTime StartDate { get; set; }
@@ -24,6 +23,6 @@ namespace Portfolio.Models
 
         // Foreign Key to ApplicationUser
         public int ApplicationUserId { get; set; }
-        public ApplicationUser ApplicationUser { get; set; }
+        public ApplicationUser? ApplicationUser { get; set; }
     }
 }

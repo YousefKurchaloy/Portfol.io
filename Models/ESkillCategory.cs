@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Portfolio.Models
 {
-    public enum SkillCategory
+    public enum ESkillCategory
     {
         [Display(Name = "Backend Development")]
         Backend,
