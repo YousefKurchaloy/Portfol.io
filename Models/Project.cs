@@ -6,6 +6,7 @@ namespace Portfolio.Models
     [Table("PortfolioProjects")]
     public class Project
     {
+        [Key]
         public int Id { get; set; }
 
         [Required]

@@ -24,6 +24,27 @@ namespace Portfolio.Data
         {
             base.OnModelCreating(modelBuilder);
 
+            // --- PREVENT MULTIPLE CASCADE PATHS
+            modelBuilder.Entity<ProjectSkill>()
+                .HasOne(ps => ps.Skill)
+                .WithMany(s => s.ProjectSkills)
+                .HasForeignKey(ps => ps.SkillId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<CredentialSkill>()
+                .HasOne(cs => cs.Skill)
+                .WithMany(s => s.CredentialSkills)
+                .HasForeignKey(cs => cs.SkillId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // --- ENFORCE UNIQUE PAIRS IN JOIN TABLES
+            modelBuilder.Entity<ProjectSkill>()
+                .HasIndex(ps => new { ps.ProjectId, ps.SkillId })
+                .IsUnique();
+
+            modelBuilder.Entity<CredentialSkill>()
+                .HasIndex(cs => new { cs.CredentialId, cs.SkillId })
+                .IsUnique();
         }
     }
 }

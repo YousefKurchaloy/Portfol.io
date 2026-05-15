@@ -8,7 +8,6 @@ namespace Portfolio.Models
     public class ApplicationUser
     {
         [Key]
-        [Required]
         public int Id { get; set; }
 
         [Required]

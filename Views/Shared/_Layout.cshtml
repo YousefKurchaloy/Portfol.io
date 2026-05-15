@@ -31,40 +31,56 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav mx-auto">
                     <li class="nav-item px-3"><a class="nav-link active" href="#projects">Projects</a></li>
-                    <li class="nav-item px-3"><a class="nav-link" href="#skills">Skills</a></li>
-                    <li class="nav-item px-3"><a class="nav-link" href="#timeline">Timeline</a></li>
-                    <li class="nav-item px-3"><a class="nav-link" href="#contact">Contact</a></li>
-                </ul>
-                <div class="d-flex">
-                    <a class="btn-cyber-outline py-1 px-3" href="#" style="font-size: 14px;">&gt; Resume</a>
-                </div>
-            </div>
-        </div>
-    </nav>
+                    <li class="nav-item px-3"><a class="nav-link" asp-controller="Users" asp-action="Index">Users</a>
+                    </li>
+                    <li class="nav-item px-3"><a class="nav-link" asp-controller="Projects"
+                                                     asp-action="Index">Projects</a></li>
+                        <li class="nav-item px-3"><a class="nav-link" asp-controller="Skills" asp-action="Index">Skills</a>
+                        </li>
+                        <li class="nav-item px-3"><a class="nav-link" asp-controller="TimelineEvents"
+                                                         asp-action="Index">Timeline Events</a></li>
+                            <li class="nav-item px-3"><a class="nav-link" asp-controller="Credentials"
+                                                             asp-action="Index">Credentials</a></li>
+                                <li class="nav-item px-3"><a class="nav-link" asp-controller="PlatformProfiles"
+                                                                 asp-action="Index">Platform Profiles</a></li>
+                                    <li class="nav-item px-3"><a class="nav-link" asp-controller="ContactMessages"
+                                                                     asp-action="Index">Contact Messages</a></li>
+                                        <li class="nav-item px-3"><a class="nav-link" asp-controller="ProjectSkills"
+                                                                         asp-action="Index">Project Skills (M2M)</a></li>
+                                            <li class="nav-item px-3"><a class="nav-link" asp-controller="CredentialSkills"
+                                                                             asp-action="Index">Credential Skills (M2M)</a></li>
+        
+                                            </ul>
+                                            <div class="d-flex">
+                                                <a class="btn-cyber-outline py-1 px-3" href="#" style="font-size: 14px;">&gt; Resume</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </nav>
 
-    @RenderBody()
+                                @RenderBody()
 
-    <footer class="border-top border-secondary-subtle py-5 mt-auto" style="position: relative; z-index: 10;">
-        <div class="container-xl">
-            <div class="row align-items-center">
-                <div class="col-md-6 text-center text-md-start mb-3 mb-md-0 font-mono text-muted-alt small">
-                    © 2026 Portfol.io // Root Access Granted
-                </div>
-                <div class="col-md-6 text-center text-md-end">
-                    <div class="d-flex justify-content-center justify-content-md-end gap-4 font-mono small">
-                        <a class="text-muted-alt text-decoration-none hover-accent" href="#">GitHub</a>
-                        <a class="text-muted-alt text-decoration-none hover-accent" href="#">LinkedIn</a>
-                        <a class="text-muted-alt text-decoration-none hover-accent" href="#">Email</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </footer>
+                                <footer class="border-top border-secondary-subtle py-5 mt-auto" style="position: relative; z-index: 10;">
+                                    <div class="container-xl">
+                                        <div class="row align-items-center">
+                                            <div class="col-md-6 text-center text-md-start mb-3 mb-md-0 font-mono text-muted-alt small">
+                                                © 2026 Portfol.io // Root Access Granted
+                                            </div>
+                                            <div class="col-md-6 text-center text-md-end">
+                                                <div class="d-flex justify-content-center justify-content-md-end gap-4 font-mono small">
+                                                    <a class="text-muted-alt text-decoration-none hover-accent" href="#">GitHub</a>
+                                                    <a class="text-muted-alt text-decoration-none hover-accent" href="#">LinkedIn</a>
+                                                    <a class="text-muted-alt text-decoration-none hover-accent" href="#">Email</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </footer>
 
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    @await RenderSectionAsync("Scripts", required: false)
-</body>
+                                <script src="~/lib/jquery/dist/jquery.min.js"></script>
+                                <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+                                <script src="~/js/site.js" asp-append-version="true"></script>
+                                @await RenderSectionAsync("Scripts", required: false)
+                            </body>
 
-</html>
+                        </html>
