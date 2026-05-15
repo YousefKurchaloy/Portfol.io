@@ -1,12 +1,9 @@
-using Portfol.io.Models;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Portfolio.Models
 {
-    [Table("PortfolioProjects")] 
+    [Table("PortfolioProjects")]
     public class Project
     {
         public int Id { get; set; }
@@ -18,8 +15,8 @@ namespace Portfolio.Models
         [Required]
         public required string Description { get; set; }
 
-        [Url] 
-        [Display(Name = "GitHub Repository")] // Annotation 5
+        [Url]
+        [Display(Name = "GitHub Repository")]
         public string? RepositoryUrl { get; set; }
 
         [DataType(DataType.Date)]
@@ -27,10 +24,8 @@ namespace Portfolio.Models
         public DateTime CompletionDate { get; set; }
 
         public int ApplicationUserId { get; set; }
-        public ApplicationUser? ApplicationUser { get; set; }
-
-
-        public IEnumerable<ProjectSkill>? ProjectSkills { get; set; } 
+        public ApplicationUser? ApplicationUser { get; set; } // Navigation property
+        public IEnumerable<ProjectSkill>? ProjectSkills { get; set; } // Navigation property for M-toN relationship with Skill
 
     }
 }

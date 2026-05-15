@@ -1,14 +1,14 @@
-using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace Portfolio.Models
 {
     public class Credential
     {
+        [Key]
         public int Id { get; set; }
 
         [Required]
-        public  required string Name { get; set; }
+        public required string Name { get; set; }
 
         [Required]
         [Display(Name = "Issuing Authority")]
@@ -21,6 +21,7 @@ namespace Portfolio.Models
         public string? VerificationUrl { get; set; }
 
         public int ApplicationUserId { get; set; }
-        public ApplicationUser? ApplicationUser { get; set; }
+        public ApplicationUser? ApplicationUser { get; set; } // Navigation property
+        public IEnumerable<CredentialSkill>? CredentialSkills { get; set; } // Navigation property for M-to-N relationship with Skill
     }
 }

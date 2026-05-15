@@ -1,10 +1,10 @@
-using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace Portfolio.Models
 {
     public class TimelineEvent
     {
+        [Key]
         public int Id { get; set; }
 
         [Required]
@@ -19,10 +19,8 @@ namespace Portfolio.Models
         public DateTime StartDate { get; set; }
 
         [DataType(DataType.Date)]
-        public DateTime? EndDate { get; set; } // Nullable for ongoing events
-
-        // Foreign Key to ApplicationUser
-        public int ApplicationUserId { get; set; }
-        public ApplicationUser? ApplicationUser { get; set; }
+        public DateTime? EndDate { get; set; } // Nullable = ~Present
+        public int ApplicationUserId { get; set; } //FK
+        public ApplicationUser? ApplicationUser { get; set; } // Navigation property to ApplicationUser
     }
 }
