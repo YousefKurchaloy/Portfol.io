@@ -13,7 +13,7 @@ This repository was developed as part of the Advanced Internet Computing course,
 
 - **[Abdallah Tahboub](https://github.com/abdullatahboub)**
 - **[Yaman Alrifai](https://github.com/yamanalrfai)**
-- **Mohammed Alhamed**
+- **[Mohammed Alhamed](https://github.com/MoHAdMed1)**
 - **[Yousef Al-Shishani](https://github.com/YousefKurchaloy)**
 
 ## Features
