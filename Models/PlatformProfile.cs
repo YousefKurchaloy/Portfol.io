@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Portfolio.Models
 {
-    public class CodingProfile
+    public class PlatformProfile
     {
         [Key]
         public int Id { get; set; }

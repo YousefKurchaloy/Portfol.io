@@ -41,7 +41,7 @@ namespace Portfolio.Models
         public IEnumerable<Skill>? Skills { get; set; }
         public IEnumerable<TimelineEvent>? TimelineEvents { get; set; }
         public IEnumerable<Credential>? Credentials { get; set; }
-        public IEnumerable<CodingProfile>? CodingProfiles { get; set; }
+        public IEnumerable<PlatformProfile>? PlatformProfiles { get; set; }
         public IEnumerable<ContactMessage>? ContactMessages { get; set; }
     }
 

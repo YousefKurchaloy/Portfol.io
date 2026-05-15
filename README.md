@@ -22,7 +22,7 @@ This repository was developed as part of the Advanced Internet Computing course,
 - **Dynamic Project Showcase:** Filter and display technical builds (e.g., APIs, mobile apps) dynamically linked to the technologies used to build them.
 - **Skills Matrix:** Categorized representation of technical proficiencies (Backend, Frontend, AI, Systems, etc.).
 - **Professional Timeline:** A chronological tracker for industry events, university milestones, and career experiences.
-- **Coding Profiles Integration:** Dedicated section to highlight algorithmic problem-solving handles (e.g., Codeforces, AtCoder).
+- **Platform Profiles Integration:** Dedicated section to highlight algorithmic problem-solving handles (e.g., Codeforces, AtCoder).
 - **Visitor Contact System:** Front-end messaging form that feeds directly into the admin dashboard for easy recruiter communication.
 
 ## Database Architecture
@@ -75,7 +75,7 @@ erDiagram
         int ApplicationUserId FK
     }
 
-    CodingProfile {
+    PlatformProfile {
         int Id PK
         string PlatformName
         string UserHandle
@@ -113,7 +113,7 @@ erDiagram
     ApplicationUser ||--o{ Skill : "has"
     ApplicationUser ||--o{ TimelineEvent : "has"
     ApplicationUser ||--o{ Credential : "has"
-    ApplicationUser ||--o{ CodingProfile : "has"
+    ApplicationUser ||--o{ PlatformProfile : "has"
     ApplicationUser ||--o{ ContactMessage : "receives"
 
     %% Many-to-Many Join Tables
@@ -126,12 +126,13 @@ erDiagram
 
 The data model is managed via **Entity Framework Core** and utilizes comprehensive data annotations and schema configurations. Core entities include:
 
-- **ApplicationUser:** Handles CMS authentication.
-- **Project & Skill:** Connected via a **Many-to-Many** relationship, reflecting how real-world projects utilize multiple technologies, and specific skills apply to multiple projects.
-- **TimelineEvent:** Tracks dates, locations, and details for professional milestones.
-- **Credential:** Verifiable achievements and certificates.
-- **CodingProfile:** Competitive programming statistics.
-- **ContactMessage:** securely stores visitor inquiries.
+- **ApplicationUser:** The central entity of the architecture. It handles CMS authentication, profile data, and acts as the principal owner of all other records. A single user can have multiple projects, skills, timeline events, credentials, platform profiles, and contact messages (One-to-Many relationships).
+- **Project & Skill (Many-to-Many):** Real-world projects utilize multiple technologies, and a specific skill can be applied across multiple projects. This is resolved through the explicit **ProjectSkill** join table, which also stores a payload column (`VersionUsed`) to track the specific version of the technology implemented in a project.
+- **Credential & Skill (Many-to-Many):** Certain certifications and credentials validate specific technical proficiencies. This is mapped through the **CredentialSkill** explicit join table, which includes an `IsCoreFocus` boolean payload to highlight the primary skills associated with the credential.
+- **TimelineEvent:** A chronological tracker that stores dates, locations, and organizational details for career and educational milestones.
+- **Credential:** Stores verifiable achievements, issue dates, issuing authorities, and external validation links.
+- **PlatformProfile:** Integrates competitive programming statistics and developer ranks (e.g., LeetCode, Codeforces, GitHub) directly to the user.
+- **ContactMessage:** Securely stores visitor inquiries submitted through the front-end portfolio, linking them directly to the targeted `ApplicationUser`'s inbox.
 
 ## Getting Started
 
