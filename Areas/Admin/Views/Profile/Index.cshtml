@@ -1,0 +1,95 @@
+@model Portfolio.Areas.Admin.ViewModels.EditProfileViewModel
+@using Portfolio.Models
+
+@{
+    ViewData["Title"] = "Edit Profile";
+}
+
+<div class="admin-page-header">
+    <h1 class="admin-page-title">
+        <span class="prompt-symbol">&gt;</span> profile --update
+    </h1>
+</div>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show font-mono mb-4 rounded-0 bg-opacity-10 border border-success text-success" role="alert" style="background: rgba(47, 248, 1, 0.05);">
+        <span class="material-symbols-outlined align-middle me-2">check_circle</span>
+        @TempData["SuccessMessage"]
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+<div class="admin-card accent-blue">
+    <form asp-action="Index" method="post" class="cyber-form">
+        <div asp-validation-summary="ModelOnly" class="auth-errors mb-3"></div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group mb-4">
+                    <label asp-for="FullName" class="form-label">Full Name</label>
+                    <input asp-for="FullName" class="form-control" placeholder="E.g., Yousef Kurchaloy" />
+                    <span asp-validation-for="FullName" class="field-validation-error"></span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group mb-4">
+                    <label asp-for="JobTitle" class="form-label">Job Title / Tagline</label>
+                    <input asp-for="JobTitle" class="form-control" placeholder="E.g., Senior Systems Architect, Lead Developer" />
+                    <span asp-validation-for="JobTitle" class="field-validation-error"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group mb-4">
+                    <label asp-for="AvailabilityStatus" class="form-label">Availability Status</label>
+                    <select asp-for="AvailabilityStatus" asp-items="Html.GetEnumSelectList<EAvailabilityStatus>()" class="form-select"></select>
+                    <span asp-validation-for="AvailabilityStatus" class="field-validation-error"></span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group mb-4">
+                    <label asp-for="ProfileImageUrl" class="form-label">Profile Image URL</label>
+                    <input asp-for="ProfileImageUrl" type="url" class="form-control" placeholder="https://images.portfol.io/avatar.jpg" />
+                    <span asp-validation-for="ProfileImageUrl" class="field-validation-error"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group mb-4">
+                    <label asp-for="GitHubUrl" class="form-label">GitHub Profile URL</label>
+                    <input asp-for="GitHubUrl" type="url" class="form-control" placeholder="https://github.com/username" />
+                    <span asp-validation-for="GitHubUrl" class="field-validation-error"></span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group mb-4">
+                    <label asp-for="LinkedInUrl" class="form-label">LinkedIn Profile URL</label>
+                    <input asp-for="LinkedInUrl" type="url" class="form-control" placeholder="https://linkedin.com/in/username" />
+                    <span asp-validation-for="LinkedInUrl" class="field-validation-error"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group mb-5">
+            <label asp-for="Bio" class="form-label">Bio / Professional Summary</label>
+            <textarea asp-for="Bio" class="form-control" rows="6" placeholder="Provide details, technology stack used, architecture constraints..."></textarea>
+            <span asp-validation-for="Bio" class="field-validation-error"></span>
+        </div>
+
+        <div class="d-flex gap-3">
+            <button type="submit" class="btn-cyber btn-primary">
+                <span class="material-symbols-outlined">save</span> Save Profile Info
+            </button>
+            <a asp-controller="Dashboard" asp-action="Index" class="btn-cyber btn-danger">Cancel</a>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
