@@ -109,9 +109,17 @@ namespace Portfolio.Areas.Admin.Controllers
                 return View(model);
             }
 
+            // Check if username is already taken
+            var existingUser = await _userManager.FindByNameAsync(model.Username);
+            if (existingUser != null)
+            {
+                ModelState.AddModelError("Username", "This username is already taken.");
+                return View(model);
+            }
+
             var user = new ApplicationUser
             {
-                UserName = model.Email,
+                UserName = model.Username,
                 Email = model.Email,
                 FullName = model.FullName,
                 Bio = "New admin user. Update this bio from the dashboard.",

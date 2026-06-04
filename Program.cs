@@ -68,7 +68,7 @@ using (var scope = app.Services.CreateScope())
         {
             var adminUser = new ApplicationUser
             {
-                UserName = adminEmail,
+                UserName = "admin",
                 Email = adminEmail,
                 FullName = "Portfolio Admin",
                 Bio = "Portfolio owner. Update this bio from the admin dashboard.",
@@ -83,6 +83,11 @@ using (var scope = app.Services.CreateScope())
             {
                 await userManager.AddToRoleAsync(adminUser, "Admin");
             }
+        }
+        else if (existingAdmin.UserName == adminEmail)
+        {
+            existingAdmin.UserName = "admin";
+            await userManager.UpdateAsync(existingAdmin);
         }
     }
     catch (Exception ex)
@@ -112,6 +117,11 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "areas",
     pattern: "{area:exists}/{controller=Dashboard}/{action=Index}/{id?}");
+
+app.MapControllerRoute(
+    name: "user_portfolio",
+    pattern: "u/{username}",
+    defaults: new { controller = "Home", action = "Index" });
 
 app.MapControllerRoute(
     name: "default",

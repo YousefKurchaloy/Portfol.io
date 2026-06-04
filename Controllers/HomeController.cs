@@ -20,39 +20,58 @@ public class HomeController : Controller
     }
 
     // GET: Home/Index
-    public async Task<IActionResult> Index()
+    public async Task<IActionResult> Index(string? username)
     {
-        var adminUser = (await _userManager.GetUsersInRoleAsync("Admin")).FirstOrDefault();
+        ApplicationUser? targetUser = null;
+
+        if (string.IsNullOrEmpty(username))
+        {
+            targetUser = (await _userManager.GetUsersInRoleAsync("Admin")).FirstOrDefault();
+        }
+        else
+        {
+            targetUser = await _userManager.Users
+                .FirstOrDefaultAsync(u => u.UserName == username);
+
+            if (targetUser == null)
+            {
+                return NotFound($"Portfolio profile for user '{username}' was not found.");
+            }
+        }
+
         var model = new HomeViewModel();
 
-        if (adminUser != null)
+        if (targetUser != null)
         {
-            model.AdminUser = adminUser;
+            model.AdminUser = targetUser;
+            model.TargetUserId = targetUser.Id;
+            model.TargetUsername = targetUser.UserName ?? string.Empty;
+
             model.Projects = await _context.Projects
-                .Where(p => p.ApplicationUserId == adminUser.Id)
+                .Where(p => p.ApplicationUserId == targetUser.Id)
                 .OrderBy(p => p.DisplayOrder)
                 .ThenByDescending(p => p.CompletionDate)
                 .ToListAsync();
 
             model.Skills = await _context.Skills
-                .Where(s => s.ApplicationUserId == adminUser.Id)
+                .Where(s => s.ApplicationUserId == targetUser.Id)
                 .OrderBy(s => s.Category)
                 .ThenBy(s => s.DisplayOrder)
                 .ToListAsync();
 
             model.Credentials = await _context.Credentials
-                .Where(c => c.ApplicationUserId == adminUser.Id)
+                .Where(c => c.ApplicationUserId == targetUser.Id)
                 .OrderByDescending(c => c.IssueDate)
                 .ToListAsync();
 
             model.TimelineEvents = await _context.TimelineEvents
-                .Where(e => e.ApplicationUserId == adminUser.Id)
+                .Where(e => e.ApplicationUserId == targetUser.Id)
                 .OrderBy(e => e.DisplayOrder)
                 .ThenByDescending(e => e.StartDate)
                 .ToListAsync();
 
             model.PlatformProfiles = await _context.PlatformProfiles
-                .Where(p => p.ApplicationUserId == adminUser.Id)
+                .Where(p => p.ApplicationUserId == targetUser.Id)
                 .OrderBy(p => p.DisplayOrder)
                 .ToListAsync();
         }
@@ -65,13 +84,13 @@ public class HomeController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> SubmitMessage(HomeViewModel model)
     {
-        var adminUser = (await _userManager.GetUsersInRoleAsync("Admin")).FirstOrDefault();
-        if (adminUser == null)
+        var targetUser = await _userManager.FindByIdAsync(model.TargetUserId.ToString());
+        if (targetUser == null)
         {
-            ModelState.AddModelError(string.Empty, "System administrator profile not found. Message routing failed.");
+            ModelState.AddModelError(string.Empty, "Target portfolio owner profile not found. Message routing failed.");
         }
 
-        if (ModelState.IsValid && adminUser != null)
+        if (ModelState.IsValid && targetUser != null)
         {
             var contactMessage = new ContactMessage
             {
@@ -82,45 +101,48 @@ public class HomeController : Controller
                 SentDate = DateTime.UtcNow,
                 IsRead = false,
                 IsArchived = false,
-                ApplicationUserId = adminUser.Id
+                ApplicationUserId = targetUser.Id
             };
 
             _context.ContactMessages.Add(contactMessage);
             await _context.SaveChangesAsync();
 
-            TempData["SuccessMessage"] = "Message successfully submitted to Admin Inbox.";
-            return RedirectToAction(nameof(Index));
+            TempData["SuccessMessage"] = $"Message successfully submitted to {targetUser.FullName}'s Inbox.";
+            return RedirectToRoute("user_portfolio", new { username = targetUser.UserName });
         }
 
         // If validation fails, re-hydrate view model
-        if (adminUser != null)
+        if (targetUser != null)
         {
-            model.AdminUser = adminUser;
+            model.AdminUser = targetUser;
+            model.TargetUserId = targetUser.Id;
+            model.TargetUsername = targetUser.UserName ?? string.Empty;
+
             model.Projects = await _context.Projects
-                .Where(p => p.ApplicationUserId == adminUser.Id)
+                .Where(p => p.ApplicationUserId == targetUser.Id)
                 .OrderBy(p => p.DisplayOrder)
                 .ThenByDescending(p => p.CompletionDate)
                 .ToListAsync();
 
             model.Skills = await _context.Skills
-                .Where(s => s.ApplicationUserId == adminUser.Id)
+                .Where(s => s.ApplicationUserId == targetUser.Id)
                 .OrderBy(s => s.Category)
                 .ThenBy(s => s.DisplayOrder)
                 .ToListAsync();
 
             model.Credentials = await _context.Credentials
-                .Where(c => c.ApplicationUserId == adminUser.Id)
+                .Where(c => c.ApplicationUserId == targetUser.Id)
                 .OrderByDescending(c => c.IssueDate)
                 .ToListAsync();
 
             model.TimelineEvents = await _context.TimelineEvents
-                .Where(e => e.ApplicationUserId == adminUser.Id)
+                .Where(e => e.ApplicationUserId == targetUser.Id)
                 .OrderBy(e => e.DisplayOrder)
                 .ThenByDescending(e => e.StartDate)
                 .ToListAsync();
 
             model.PlatformProfiles = await _context.PlatformProfiles
-                .Where(p => p.ApplicationUserId == adminUser.Id)
+                .Where(p => p.ApplicationUserId == targetUser.Id)
                 .OrderBy(p => p.DisplayOrder)
                 .ToListAsync();
         }

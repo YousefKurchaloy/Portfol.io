@@ -6,6 +6,8 @@ namespace Portfolio.ViewModels
     public class HomeViewModel
     {
         public ApplicationUser? AdminUser { get; set; }
+        public int TargetUserId { get; set; }
+        public string TargetUsername { get; set; } = string.Empty;
         public List<Project> Projects { get; set; } = new List<Project>();
         public List<Skill> Skills { get; set; } = new List<Skill>();
         public List<Credential> Credentials { get; set; } = new List<Credential>();

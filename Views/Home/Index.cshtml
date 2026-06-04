@@ -356,6 +356,8 @@
 
             <form asp-action="SubmitMessage" method="post" class="cyber-form mt-4">
                 <div asp-validation-summary="ModelOnly" class="auth-errors mb-3"></div>
+                <input type="hidden" asp-for="TargetUserId" />
+                <input type="hidden" asp-for="TargetUsername" />
 
                 <div class="row">
                     <div class="col-md-6">

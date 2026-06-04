@@ -55,6 +55,16 @@
             </div>
 
             <div class="form-group">
+                <label asp-for="Username" class="form-label">Username (Profile URL Prefix)</label>
+                <input asp-for="Username"
+                       class="form-control"
+                       type="text"
+                       placeholder="yousef"
+                       id="register-username" />
+                <span asp-validation-for="Username" class="field-validation-error"></span>
+            </div>
+
+            <div class="form-group">
                 <label asp-for="Email" class="form-label">Email Address</label>
                 <input asp-for="Email"
                        class="form-control"
