@@ -66,6 +66,12 @@ namespace Portfolio.Areas.Admin.Controllers
 
             ModelState.Remove("ApplicationUser");
 
+            // Uniqueness check for DisplayOrder
+            if (await _context.PlatformProfiles.AnyAsync(p => p.ApplicationUserId == userId && p.DisplayOrder == profile.DisplayOrder))
+            {
+                ModelState.AddModelError("DisplayOrder", "This Display Order is already in use by another platform profile.");
+            }
+
             if (ModelState.IsValid)
             {
                 _context.Add(profile);
@@ -100,6 +106,12 @@ namespace Portfolio.Areas.Admin.Controllers
             profile.ApplicationUserId = userId;
 
             ModelState.Remove("ApplicationUser");
+
+            // Uniqueness check for DisplayOrder
+            if (await _context.PlatformProfiles.AnyAsync(p => p.ApplicationUserId == userId && p.DisplayOrder == profile.DisplayOrder && p.Id != profile.Id))
+            {
+                ModelState.AddModelError("DisplayOrder", "This Display Order is already in use by another platform profile.");
+            }
 
             if (ModelState.IsValid)
             {

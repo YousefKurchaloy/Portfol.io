@@ -68,6 +68,12 @@ namespace Portfolio.Areas.Admin.Controllers
             // Clear model state error for ApplicationUser since it's populated manually
             ModelState.Remove("ApplicationUser");
 
+            // Uniqueness check for DisplayOrder
+            if (await _context.Projects.AnyAsync(p => p.ApplicationUserId == userId && p.DisplayOrder == project.DisplayOrder))
+            {
+                ModelState.AddModelError("DisplayOrder", "This Display Order is already in use by another project.");
+            }
+
             if (ModelState.IsValid)
             {
                 _context.Add(project);
@@ -102,6 +108,12 @@ namespace Portfolio.Areas.Admin.Controllers
             project.ApplicationUserId = userId;
 
             ModelState.Remove("ApplicationUser");
+
+            // Uniqueness check for DisplayOrder
+            if (await _context.Projects.AnyAsync(p => p.ApplicationUserId == userId && p.DisplayOrder == project.DisplayOrder && p.Id != project.Id))
+            {
+                ModelState.AddModelError("DisplayOrder", "This Display Order is already in use by another project.");
+            }
 
             if (ModelState.IsValid)
             {

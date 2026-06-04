@@ -67,6 +67,12 @@ namespace Portfolio.Areas.Admin.Controllers
 
             ModelState.Remove("ApplicationUser");
 
+            // Uniqueness check for DisplayOrder
+            if (await _context.TimelineEvents.AnyAsync(e => e.ApplicationUserId == userId && e.DisplayOrder == timelineEvent.DisplayOrder))
+            {
+                ModelState.AddModelError("DisplayOrder", "This Display Order is already in use by another timeline event.");
+            }
+
             if (ModelState.IsValid)
             {
                 _context.Add(timelineEvent);
@@ -101,6 +107,12 @@ namespace Portfolio.Areas.Admin.Controllers
             timelineEvent.ApplicationUserId = userId;
 
             ModelState.Remove("ApplicationUser");
+
+            // Uniqueness check for DisplayOrder
+            if (await _context.TimelineEvents.AnyAsync(e => e.ApplicationUserId == userId && e.DisplayOrder == timelineEvent.DisplayOrder && e.Id != timelineEvent.Id))
+            {
+                ModelState.AddModelError("DisplayOrder", "This Display Order is already in use by another timeline event.");
+            }
 
             if (ModelState.IsValid)
             {

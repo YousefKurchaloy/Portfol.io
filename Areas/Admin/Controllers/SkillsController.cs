@@ -67,6 +67,12 @@ namespace Portfolio.Areas.Admin.Controllers
 
             ModelState.Remove("ApplicationUser");
 
+            // Uniqueness check for DisplayOrder
+            if (await _context.Skills.AnyAsync(s => s.ApplicationUserId == userId && s.DisplayOrder == skill.DisplayOrder))
+            {
+                ModelState.AddModelError("DisplayOrder", "This Display Order is already in use by another skill.");
+            }
+
             if (ModelState.IsValid)
             {
                 _context.Add(skill);
@@ -101,6 +107,12 @@ namespace Portfolio.Areas.Admin.Controllers
             skill.ApplicationUserId = userId;
 
             ModelState.Remove("ApplicationUser");
+
+            // Uniqueness check for DisplayOrder
+            if (await _context.Skills.AnyAsync(s => s.ApplicationUserId == userId && s.DisplayOrder == skill.DisplayOrder && s.Id != skill.Id))
+            {
+                ModelState.AddModelError("DisplayOrder", "This Display Order is already in use by another skill.");
+            }
 
             if (ModelState.IsValid)
             {

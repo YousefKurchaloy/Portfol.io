@@ -19,8 +19,10 @@ namespace Portfolio.Models
         [Display(Name = "Icon CSS Class")]
         public string? IconClass { get; set; }
 
+        [Required]
+        [Range(1, int.MaxValue, ErrorMessage = "Display Order must be a positive integer.")]
         [Display(Name = "Display Order")]
-        public int DisplayOrder { get; set; } = 0;
+        public int DisplayOrder { get; set; } = 1;
 
         // --- Foreign Key & Navigation ---
         public int ApplicationUserId { get; set; }
