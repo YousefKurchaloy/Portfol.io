@@ -1,0 +1,71 @@
+@model Portfolio.Models.PlatformProfile
+
+@{
+    ViewData["Title"] = "Add Platform Profile";
+}
+
+<div class="admin-page-header">
+    <h1 class="admin-page-title">
+        <span class="prompt-symbol">&gt;</span> platform_profiles --insert
+    </h1>
+    <a asp-action="Index" class="btn-cyber">
+        <span class="material-symbols-outlined">arrow_back</span> Back to List
+    </a>
+</div>
+
+<div class="admin-card accent-blue">
+    <form asp-action="Create" class="cyber-form">
+        <div asp-validation-summary="ModelOnly" class="auth-errors mb-3"></div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="PlatformName" class="form-label">Platform Name</label>
+                    <input asp-for="PlatformName" class="form-control" placeholder="E.g., Codeforces, LeetCode, GitHub" />
+                    <span asp-validation-for="PlatformName" class="field-validation-error"></span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="UserHandle" class="form-label">User Handle / Username</label>
+                    <input asp-for="UserHandle" class="form-control" placeholder="E.g., kurchaloy" />
+                    <span asp-validation-for="UserHandle" class="field-validation-error"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="Rank" class="form-label">Rank / Rating (Optional)</label>
+                    <input asp-for="Rank" class="form-control" placeholder="E.g., Candidate Master, Gold, 2100" />
+                    <span asp-validation-for="Rank" class="field-validation-error"></span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="DisplayOrder" class="form-label">Display Order</label>
+                    <input asp-for="DisplayOrder" type="number" class="form-control" value="0" />
+                    <span asp-validation-for="DisplayOrder" class="field-validation-error"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="ProfileUrl" class="form-label">Profile URL</label>
+            <input asp-for="ProfileUrl" type="url" class="form-control" placeholder="https://codeforces.com/profile/..." />
+            <span asp-validation-for="ProfileUrl" class="field-validation-error"></span>
+        </div>
+
+        <div class="d-flex gap-3">
+            <button type="submit" class="btn-cyber btn-primary">
+                <span class="material-symbols-outlined">save</span> Save Profile
+            </button>
+            <a asp-action="Index" class="btn-cyber btn-danger">Cancel</a>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

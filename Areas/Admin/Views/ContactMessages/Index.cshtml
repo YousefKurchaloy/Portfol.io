@@ -1,0 +1,64 @@
+@model IEnumerable<Portfolio.Models.ContactMessage>
+
+@{
+    bool showArchived = ViewData["ShowArchived"] as bool? ?? false;
+    ViewData["Title"] = showArchived ? "Archived Messages" : "Contact Messages";
+}
+
+<div class="admin-page-header">
+    <h1 class="admin-page-title">
+        <span class="prompt-symbol">&gt;</span> contact_inbox @(showArchived ? "--archived" : "--active")
+    </h1>
+    <div>
+        @if (showArchived)
+        {
+            <a asp-action="Index" asp-route-showArchived="false" class="btn-cyber">
+                <span class="material-symbols-outlined">inbox</span> View Active Inbox
+            </a>
+        }
+        else
+        {
+            <a asp-action="Index" asp-route-showArchived="true" class="btn-cyber">
+                <span class="material-symbols-outlined">archive</span> View Archive
+            </a>
+        }
+    </div>
+</div>
+
+<div class="admin-card accent-blue">
+    @if (!Model.Any())
+    {
+        <div class="text-center p-5 text-muted">
+            <span class="material-symbols-outlined" style="font-size: 3rem;">mail_outline</span>
+            <p class="mt-2">No messages in this folder.</p>
+        </div>
+    }
+    else
+    {
+        <div class="message-list">
+            @foreach (var item in Model)
+            {
+                <div class="message-list-item @(!item.IsRead ? "unread" : "")" onclick="window.location='@Url.Action("Details", new { id = item.Id })'">
+                    <div class="message-meta">
+                        <span class="message-sender">
+                            @item.SenderName &lt;@item.SenderEmail&gt;
+                        </span>
+                        <span>
+                            @item.SentDate.ToLocalTime().ToString("yyyy-MM-dd HH:mm")
+                        </span>
+                    </div>
+                    <div class="message-subject">
+                        @if (!item.IsRead)
+                        {
+                            <span class="badge-cyber primary me-2">NEW</span>
+                        }
+                        @item.Subject
+                    </div>
+                    <div class="message-preview">
+                        @item.Body
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>

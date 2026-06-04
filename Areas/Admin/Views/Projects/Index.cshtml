@@ -1,0 +1,83 @@
+@model IEnumerable<Portfolio.Models.Project>
+
+@{
+    ViewData["Title"] = "Projects";
+}
+
+<div class="admin-page-header">
+    <h1 class="admin-page-title">
+        <span class="prompt-symbol">&gt;</span> projects_db --list
+    </h1>
+    <a asp-action="Create" class="btn-cyber btn-primary">
+        <span class="material-symbols-outlined">add</span> Create New Project
+    </a>
+</div>
+
+<div class="admin-card accent-blue">
+    <div class="cyber-table-container">
+        <table class="cyber-table">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Completion Date</th>
+                    <th>Order</th>
+                    <th>Featured</th>
+                    <th>Links</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (!Model.Any())
+                {
+                    <tr>
+                        <td colspan="6" class="text-center text-muted">No records found. Run project_db --seed.</td>
+                    </tr>
+                }
+                else
+                {
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                <strong>@item.Title</strong>
+                            </td>
+                            <td>
+                                @(item.CompletionDate?.ToString("yyyy-MM-dd") ?? "In Progress")
+                            </td>
+                            <td>
+                                @item.DisplayOrder
+                            </td>
+                            <td>
+                                @if (item.IsFeatured)
+                                {
+                                    <span class="badge-cyber featured">Featured</span>
+                                }
+                                else
+                                {
+                                    <span class="badge-cyber">Standard</span>
+                                }
+                            </td>
+                            <td>
+                                @if (!string.IsNullOrEmpty(item.RepositoryUrl))
+                                {
+                                    <a href="@item.RepositoryUrl" target="_blank" class="badge-cyber primary" style="text-decoration: none;">GitHub</a>
+                                }
+                                @if (!string.IsNullOrEmpty(item.LiveDemoUrl))
+                                {
+                                    <a href="@item.LiveDemoUrl" target="_blank" class="badge-cyber active" style="text-decoration: none;">Live Demo</a>
+                                }
+                            </td>
+                            <td>
+                                <div class="d-flex gap-2">
+                                    <a asp-action="Details" asp-route-id="@item.Id" class="btn-cyber btn-sm">Details</a>
+                                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn-cyber btn-sm">Edit</a>
+                                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn-cyber btn-sm btn-danger">Delete</a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -1,0 +1,81 @@
+@model IEnumerable<Portfolio.Models.Skill>
+
+@{
+    ViewData["Title"] = "Skills Matrix";
+}
+
+<div class="admin-page-header">
+    <h1 class="admin-page-title">
+        <span class="prompt-symbol">&gt;</span> skills_matrix --list
+    </h1>
+    <a asp-action="Create" class="btn-cyber btn-primary">
+        <span class="material-symbols-outlined">add</span> Add New Skill
+    </a>
+</div>
+
+<div class="admin-card accent-blue">
+    <div class="cyber-table-container">
+        <table class="cyber-table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Category</th>
+                    <th>Proficiency</th>
+                    <th>Icon Class</th>
+                    <th>Order</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (!Model.Any())
+                {
+                    <tr>
+                        <td colspan="6" class="text-center text-muted">No records found. Run skills_matrix --seed.</td>
+                    </tr>
+                }
+                else
+                {
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                <strong>@item.Name</strong>
+                            </td>
+                            <td>
+                                <span class="badge-cyber">@item.Category</span>
+                            </td>
+                            <td>
+                                <div class="d-flex align-items-center gap-2" style="max-width: 150px;">
+                                    <div class="progress flex-grow-1" style="height: 6px; background: rgba(58, 73, 75, 0.4); border-radius: 0;">
+                                        <div class="progress-bar" role="progressbar" style="width: @(item.ProficiencyLevel)%; background: var(--primary-accent);" aria-valuenow="@item.ProficiencyLevel" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                    <span>@item.ProficiencyLevel%</span>
+                                </div>
+                            </td>
+                            <td>
+                                @if (!string.IsNullOrEmpty(item.IconClass))
+                                {
+                                    <code>@item.IconClass</code>
+                                }
+                                else
+                                {
+                                    <span class="text-muted">None</span>
+                                }
+                            </td>
+                            <td>
+                                @item.DisplayOrder
+                            </td>
+                            <td>
+                                <div class="d-flex gap-2">
+                                    <a asp-action="Details" asp-route-id="@item.Id" class="btn-cyber btn-sm">Details</a>
+                                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn-cyber btn-sm">Edit</a>
+                                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn-cyber btn-sm btn-danger">Delete</a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

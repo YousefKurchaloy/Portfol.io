@@ -1,0 +1,94 @@
+@model Portfolio.Models.Project
+
+@{
+    ViewData["Title"] = "Project Details";
+}
+
+<div class="admin-page-header">
+    <h1 class="admin-page-title">
+        <span class="prompt-symbol">&gt;</span> project_db --inspect --id=@Model.Id
+    </h1>
+    <a asp-action="Index" class="btn-cyber">
+        <span class="material-symbols-outlined">arrow_back</span> Back to List
+    </a>
+</div>
+
+<div class="admin-card accent-blue">
+    <div class="cyber-details-grid">
+        <div class="cyber-details-label">Project Title</div>
+        <div class="cyber-details-value">@Model.Title</div>
+    </div>
+    <div class="cyber-details-grid">
+        <div class="cyber-details-label">Completion Date</div>
+        <div class="cyber-details-value">@(Model.CompletionDate?.ToString("yyyy-MM-dd") ?? "In Progress")</div>
+    </div>
+    <div class="cyber-details-grid">
+        <div class="cyber-details-label">Repository URL</div>
+        <div class="cyber-details-value">
+            @if (!string.IsNullOrEmpty(Model.RepositoryUrl))
+            {
+                <a href="@Model.RepositoryUrl" target="_blank" style="color: var(--primary-accent);">@Model.RepositoryUrl</a>
+            }
+            else
+            {
+                <span class="text-muted">None</span>
+            }
+        </div>
+    </div>
+    <div class="cyber-details-grid">
+        <div class="cyber-details-label">Live Demo URL</div>
+        <div class="cyber-details-value">
+            @if (!string.IsNullOrEmpty(Model.LiveDemoUrl))
+            {
+                <a href="@Model.LiveDemoUrl" target="_blank" style="color: var(--secondary-accent);">@Model.LiveDemoUrl</a>
+            }
+            else
+            {
+                <span class="text-muted">None</span>
+            }
+        </div>
+    </div>
+    <div class="cyber-details-grid">
+        <div class="cyber-details-label">Cover Image URL</div>
+        <div class="cyber-details-value">
+            @if (!string.IsNullOrEmpty(Model.ImageUrl))
+            {
+                <a href="@Model.ImageUrl" target="_blank" style="color: var(--on-surface-variant);">@Model.ImageUrl</a>
+            }
+            else
+            {
+                <span class="text-muted">None</span>
+            }
+        </div>
+    </div>
+    <div class="cyber-details-grid">
+        <div class="cyber-details-label">Sorting/Priority</div>
+        <div class="cyber-details-value">Display Order: @Model.DisplayOrder</div>
+    </div>
+    <div class="cyber-details-grid">
+        <div class="cyber-details-label">Featured</div>
+        <div class="cyber-details-value">
+            @if (Model.IsFeatured)
+            {
+                <span class="badge-cyber featured">Featured Project</span>
+            }
+            else
+            {
+                <span class="badge-cyber">Standard Project</span>
+            }
+        </div>
+    </div>
+    <div class="cyber-details-grid">
+        <div class="cyber-details-label">Description</div>
+        <div class="cyber-details-value" style="white-space: pre-wrap;">@Model.Description</div>
+    </div>
+
+    <div class="mt-4 d-flex gap-3">
+        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn-cyber btn-primary">
+            <span class="material-symbols-outlined">edit</span> Edit Project
+        </a>
+        <a asp-action="Delete" asp-route-id="@Model.Id" class="btn-cyber btn-danger">
+            <span class="material-symbols-outlined">delete</span> Delete
+        </a>
+    </div>
+</div>

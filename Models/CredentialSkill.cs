@@ -2,20 +2,17 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Portfolio.Models
 {
-    public class CredentialSkill
+    public class CredentialSkill : BaseEntity
     {
-        [Key]
-        public int Id { get; set; }
-
         [Display(Name = "Core Focus")]
         public bool IsCoreFocus { get; set; } = false;
-        [Required]
-        public int CredentialId { get; set; } // FK
-        public Credential? Credential { get; set; } // Navigation property
 
         [Required]
-        public int SkillId { get; set; } // FK
-        public Skill? Skill { get; set; } // Navigation property
+        public int CredentialId { get; set; }
+        public Credential? Credential { get; set; }
 
+        [Required]
+        public int SkillId { get; set; }
+        public Skill? Skill { get; set; }
     }
 }

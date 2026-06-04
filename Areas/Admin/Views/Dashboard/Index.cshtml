@@ -1,0 +1,137 @@
+@{
+    ViewData["Title"] = "Control Center";
+    var recentProjects = ViewBag.RecentProjects as List<Portfolio.Models.Project> ?? new List<Portfolio.Models.Project>();
+    var recentMessages = ViewBag.RecentMessages as List<Portfolio.Models.ContactMessage> ?? new List<Portfolio.Models.ContactMessage>();
+}
+
+<div class="admin-page-header">
+    <h1 class="admin-page-title">
+        <span class="prompt-symbol">&gt;</span> portfol.io --dashboard
+    </h1>
+    <div class="font-mono text-muted-alt small">
+        System Active // Node: 127.0.0.1
+    </div>
+</div>
+
+<!-- Stats Grid -->
+<div class="row g-4 mb-4">
+    <div class="col-md-6 col-lg-3">
+        <div class="admin-card accent-blue h-100 py-3 d-flex flex-column justify-content-between">
+            <div>
+                <div class="font-mono text-muted-alt text-uppercase small mb-1">Projects Deployed</div>
+                <h2 class="text-white font-mono mb-0">@ViewBag.ProjectCount</h2>
+            </div>
+            <a asp-controller="Projects" asp-action="Index" class="btn-cyber btn-sm mt-3 w-100 text-center">Manage</a>
+        </div>
+    </div>
+    <div class="col-md-6 col-lg-3">
+        <div class="admin-card accent-green h-100 py-3 d-flex flex-column justify-content-between">
+            <div>
+                <div class="font-mono text-muted-alt text-uppercase small mb-1">Skills Configured</div>
+                <h2 class="text-white font-mono mb-0">@ViewBag.SkillCount</h2>
+            </div>
+            <a asp-controller="Skills" asp-action="Index" class="btn-cyber btn-sm mt-3 w-100 text-center">Manage</a>
+        </div>
+    </div>
+    <div class="col-md-6 col-lg-3">
+        <div class="admin-card h-100 py-3 d-flex flex-column justify-content-between" style="border-left: 4px solid var(--bs-body-color);">
+            <div>
+                <div class="font-mono text-muted-alt text-uppercase small mb-1">Credentials/Certs</div>
+                <h2 class="text-white font-mono mb-0">@ViewBag.CredentialCount</h2>
+            </div>
+            <a asp-controller="Credentials" asp-action="Index" class="btn-cyber btn-sm mt-3 w-100 text-center">Manage</a>
+        </div>
+    </div>
+    <div class="col-md-6 col-lg-3">
+        <div class="admin-card accent-red h-100 py-3 d-flex flex-column justify-content-between">
+            <div>
+                <div class="font-mono text-muted-alt text-uppercase small mb-1">Inbox Messages</div>
+                <h2 class="text-white font-mono mb-0">
+                    @ViewBag.UnreadMessages <span class="text-muted" style="font-size: 1rem;">/ @ViewBag.TotalMessages total</span>
+                </h2>
+            </div>
+            <a asp-controller="ContactMessages" asp-action="Index" class="btn-cyber btn-sm mt-3 w-100 text-center">Open Inbox</a>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4">
+    <!-- Recent Messages -->
+    <div class="col-lg-6">
+        <div class="admin-card h-100">
+            <h4 class="text-white mb-3 font-mono border-bottom border-secondary-subtle pb-2">
+                <span class="prompt-symbol">&gt;</span> Recent Messages
+            </h4>
+            
+            @if (!recentMessages.Any())
+            {
+                <p class="text-muted font-mono small py-4">Inbox is clean. No active messages.</p>
+            }
+            else
+            {
+                <div class="d-flex flex-column gap-3">
+                    @foreach (var msg in recentMessages)
+                    {
+                        <div class="p-3 border @(msg.IsRead ? "border-secondary-subtle" : "border-info")" style="background: rgba(13, 21, 21, 0.4);">
+                            <div class="d-flex justify-content-between mb-2 small font-mono">
+                                <span class="text-light">@msg.SenderName</span>
+                                <span class="text-muted-alt">@msg.SentDate.ToLocalTime().ToString("MM-dd HH:mm")</span>
+                            </div>
+                            <div class="font-mono mb-2" style="font-size: 0.9rem;">
+                                @if (!msg.IsRead)
+                                {
+                                    <span class="badge-cyber primary me-2">NEW</span>
+                                }
+                                @msg.Subject
+                            </div>
+                            <div class="d-flex justify-content-end gap-2">
+                                <a asp-controller="ContactMessages" asp-action="Details" asp-route-id="@msg.Id" class="btn-cyber btn-sm">Read</a>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+        </div>
+    </div>
+
+    <!-- Recent Projects -->
+    <div class="col-lg-6">
+        <div class="admin-card h-100">
+            <h4 class="text-white mb-3 font-mono border-bottom border-secondary-subtle pb-2">
+                <span class="prompt-symbol">&gt;</span> Recent Projects
+            </h4>
+
+            @if (!recentProjects.Any())
+            {
+                <p class="text-muted font-mono small py-4">No projects registered. Click below to add one.</p>
+                <a asp-controller="Projects" asp-action="Create" class="btn-cyber btn-sm btn-primary">Add Project</a>
+            }
+            else
+            {
+                <div class="cyber-table-container">
+                    <table class="cyber-table">
+                        <thead>
+                            <tr>
+                                <th>Title</th>
+                                <th>Date</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var proj in recentProjects)
+                            {
+                                <tr>
+                                    <td><strong>@proj.Title</strong></td>
+                                    <td>@(proj.CompletionDate?.ToString("yyyy-MM-dd") ?? "Ongoing")</td>
+                                    <td>
+                                        <a asp-controller="Projects" asp-action="Edit" asp-route-id="@proj.Id" class="btn-cyber btn-sm">Edit</a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+        </div>
+    </div>
+</div>

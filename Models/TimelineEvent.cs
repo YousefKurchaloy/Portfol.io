@@ -2,25 +2,39 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Portfolio.Models
 {
-    public class TimelineEvent
+    public class TimelineEvent : BaseEntity
     {
-        [Key]
-        public int Id { get; set; }
-
         [Required]
+        [StringLength(200)]
         public required string Title { get; set; }
 
         [Required]
+        [StringLength(200)]
         public required string Organization { get; set; }
 
+        [StringLength(100)]
         public string? Location { get; set; }
 
+        [StringLength(1000)]
+        [DataType(DataType.MultilineText)]
+        public string? Description { get; set; }
+
+        [Display(Name = "Event Type")]
+        public ETimelineEventType EventType { get; set; } = ETimelineEventType.Work;
+
+        [Display(Name = "Display Order")]
+        public int DisplayOrder { get; set; } = 0;
+
         [DataType(DataType.Date)]
+        [Display(Name = "Start Date")]
         public DateTime StartDate { get; set; }
 
         [DataType(DataType.Date)]
-        public DateTime? EndDate { get; set; } // Nullable = ~Present
-        public int ApplicationUserId { get; set; } //FK
-        public ApplicationUser? ApplicationUser { get; set; } // Navigation property to ApplicationUser
+        [Display(Name = "End Date")]
+        public DateTime? EndDate { get; set; } // Nullable = "Present"
+
+        // --- Foreign Key & Navigation ---
+        public int ApplicationUserId { get; set; }
+        public ApplicationUser? ApplicationUser { get; set; }
     }
 }

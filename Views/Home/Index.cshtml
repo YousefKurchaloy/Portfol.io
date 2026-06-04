@@ -1,88 +1,399 @@
-﻿@{
-    ViewData["Title"] = "Root Access";
+@model Portfolio.ViewModels.HomeViewModel
+@using Portfolio.Models
+
+@{
+    ViewData["Title"] = Model.AdminUser?.FullName ?? "Root Access";
 }
 
 <main class="container-xl pb-5">
     
+    <!-- Hero / Profile Section -->
     <section class="row align-items-center min-vh-75 py-5 mt-5">
-        <div class="col-12">
+        <div class="col-lg-8">
             <div class="font-mono text-muted mb-2 small">
                 <span class="text-secondary-accent">root@portfol.io</span>:<span class="text-accent">~</span>$
                 ./init_profile.sh
             </div>
-            <h1 class="display-3 text-white mb-4">
-                Yousef<span class="text-accent cursor-blink">_</span>
-            </h1>
-            <div class="border-start border-2 border-secondary-subtle ps-4 mb-5">
-                <p class="h4 text-muted-alt mb-0">
-                    Backend Developer transitioning into <span class="text-accent">AI Application Engineer</span>.
-                </p>
-            </div>
-            <div class="d-flex flex-wrap gap-4">
-                <a class="btn btn-cyber" href="#projects">View Projects</a>
-                <a class="btn btn-cyber-outline" href="#contact">Get in Touch</a>
-            </div>
+            
+            @if (Model.AdminUser != null)
+            {
+                <h1 class="display-3 text-white mb-2">
+                    @Model.AdminUser.FullName<span class="text-accent cursor-blink">_</span>
+                </h1>
+                
+                @if (!string.IsNullOrEmpty(Model.AdminUser.JobTitle))
+                {
+                    <h5 class="text-accent font-mono mb-4">@Model.AdminUser.JobTitle</h5>
+                }
+
+                <div class="d-flex flex-wrap gap-2 mb-4 align-items-center">
+                    <span class="badge border border-secondary-subtle rounded-0 font-mono text-muted-alt p-2 fw-normal">
+                        STATUS: 
+                        @switch (Model.AdminUser.AvailabilityStatus)
+                        {
+                            case EAvailabilityStatus.OpenForWork:
+                                <span class="text-secondary-accent">Open to Opportunities</span>
+                                break;
+                            case EAvailabilityStatus.Employed:
+                                <span class="text-warning">Currently Employed</span>
+                                break;
+                            case EAvailabilityStatus.Freelancing:
+                                <span class="text-accent">Available for Freelance/Contract</span>
+                                break;
+                            case EAvailabilityStatus.Building:
+                                <span class="text-info">Stealth Mode / Building</span>
+                                break;
+                            case EAvailabilityStatus.Unavailable:
+                            default:
+                                <span class="text-danger">Unavailable</span>
+                                break;
+                        }
+                    </span>
+                </div>
+
+                <div class="border-start border-2 border-secondary-subtle ps-4 mb-5">
+                    <p class="h5 text-muted-alt mb-0" style="line-height: 1.6; white-space: pre-wrap;">@Model.AdminUser.Bio</p>
+                </div>
+
+                <div class="d-flex flex-wrap gap-3">
+                    <a class="btn btn-cyber" href="#projects">View Projects</a>
+                    <a class="btn btn-cyber-outline" href="#contact">Get in Touch</a>
+                    
+                    @if (!string.IsNullOrEmpty(Model.AdminUser.GitHubUrl))
+                    {
+                        <a href="@Model.AdminUser.GitHubUrl" target="_blank" class="btn btn-cyber-outline">GitHub</a>
+                    }
+                    @if (!string.IsNullOrEmpty(Model.AdminUser.LinkedInUrl))
+                    {
+                        <a href="@Model.AdminUser.LinkedInUrl" target="_blank" class="btn btn-cyber-outline">LinkedIn</a>
+                    }
+                </div>
+            }
+            else
+            {
+                <h1 class="display-3 text-white mb-4">
+                    Portfol.io<span class="text-accent cursor-blink">_</span>
+                </h1>
+                <div class="border-start border-2 border-secondary-subtle ps-4 mb-5">
+                    <p class="h4 text-muted-alt mb-0">
+                        Admin seed has not completed. Run the app to automatically provision system database.
+                    </p>
+                </div>
+            }
         </div>
+        
+        @if (Model.AdminUser != null && !string.IsNullOrEmpty(Model.AdminUser.ProfileImageUrl))
+        {
+            <div class="col-lg-4 text-center mt-5 mt-lg-0">
+                <div class="position-relative d-inline-block">
+                    <img src="@Model.AdminUser.ProfileImageUrl" alt="@Model.AdminUser.FullName" class="img-fluid border border-secondary-subtle p-2 bg-dark" style="max-height: 320px; filter: grayscale(30%);" />
+                    <div class="position-absolute" style="top: 0; left: 0; right: 0; bottom: 0; border: 1px solid var(--primary-accent); margin: -4px; pointer-events: none; opacity: 0.7;"></div>
+                </div>
+            </div>
+        }
     </section>
 
+    <!-- Success Message Toast/Alert -->
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success border border-success rounded-0 bg-dark text-success font-mono my-4 p-3" role="alert">
+            <span class="material-symbols-outlined align-middle me-2">verified</span>
+            @TempData["SuccessMessage"]
+        </div>
+    }
+
+    <!-- Projects Section -->
+    <section class="py-5" id="projects">
+        <div class="section-header">
+            <span class="material-symbols-outlined fs-6">terminal</span>
+            &gt; cat projects_db.json
+        </div>
+        
+        @if (!Model.Projects.Any())
+        {
+            <p class="text-muted font-mono ms-3">No project records found in database.</p>
+        }
+        else
+        {
+            <div class="row g-4">
+                @foreach (var item in Model.Projects)
+                {
+                    <div class="col-md-6 col-lg-4">
+                        <div class="glass-card d-flex flex-column" style="@(item.IsFeatured ? "border-color: var(--primary-accent); box-shadow: 0 0 10px rgba(0,243,255,0.05);" : "")">
+                            @if (!string.IsNullOrEmpty(item.ImageUrl))
+                            {
+                                <div class="project-image-wrapper position-relative overflow-hidden border-bottom border-secondary-subtle" style="height: 180px;">
+                                    <img src="@item.ImageUrl" alt="@item.Title" class="w-100 h-100 object-fit-cover" style="filter: grayscale(40%);" />
+                                    @if (item.IsFeatured)
+                                    {
+                                        <div class="position-absolute top-0 right-0 bg-primary text-dark font-mono px-2 py-1 small fw-bold" style="background-color: var(--primary-accent) !important;">
+                                            FEATURED
+                                        </div>
+                                    }
+                                </div>
+                            }
+                            <div class="p-4 flex-grow-1 d-flex flex-column">
+                                <h4 class="text-white mb-1">@item.Title</h4>
+                                <div class="font-mono text-muted small mb-3">
+                                    @(item.CompletionDate?.ToString("yyyy-MM-dd") ?? "Ongoing Project / WIP")
+                                </div>
+                                <p class="text-muted-alt small flex-grow-1" style="line-height: 1.5; white-space: pre-wrap;">@item.Description</p>
+                                
+                                <div class="mt-4 pt-3 border-top border-secondary-subtle d-flex gap-2">
+                                    @if (!string.IsNullOrEmpty(item.RepositoryUrl))
+                                    {
+                                        <a href="@item.RepositoryUrl" target="_blank" class="btn btn-cyber-outline py-1 px-3" style="font-size: 12px;">GitHub</a>
+                                    }
+                                    @if (!string.IsNullOrEmpty(item.LiveDemoUrl))
+                                    {
+                                        <a href="@item.LiveDemoUrl" target="_blank" class="btn btn-cyber py-1 px-3" style="font-size: 12px;">Live Demo</a>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+    </section>
+
+    <!-- Skills Section -->
     <section class="py-5" id="skills">
         <div class="section-header">
             <span class="material-symbols-outlined fs-6">terminal</span>
             &gt; cat skills_matrix.json
         </div>
-        <div class="row g-4">
-            <div class="col-md-8">
-                <div class="glass-card p-4 d-flex flex-column">
-                    <h5 class="font-mono text-white mb-3 d-flex align-items-center gap-2 border-top border-accent pt-2">
-                        <span class="material-symbols-outlined fs-6 text-accent">database</span>
-                        Backend Infrastructure
-                    </h5>
-                    <div class="d-flex flex-wrap gap-2 mb-4">
-                        <span
-                        class="badge border border-secondary-subtle rounded-0 font-mono text-muted-alt p-2 fw-normal">Java</span>
-                        <span
-                            class="badge border border-secondary-subtle rounded-0 font-mono text-muted-alt p-2 fw-normal">Spring
-                            Boot</span>
-                            <span
-                                class="badge border border-secondary-subtle rounded-0 font-mono text-muted-alt p-2 fw-normal">ASP.NET
-                                Core</span>
-                            </div>
-                            <div class="mt-auto">
-                                <div class="progress progress-cyber">
-                                    <div class="progress-bar progress-bar-cyber" style="width: 90%"></div>
-                                </div>
+
+        @if (!Model.Skills.Any())
+        {
+            <p class="text-muted font-mono ms-3">No skill records found in database.</p>
+        }
+        else
+        {
+            var groupedSkills = Model.Skills.GroupBy(s => s.Category);
+            <div class="row g-4">
+                @foreach (var group in groupedSkills)
+                {
+                    <div class="col-md-6 col-lg-4">
+                        <div class="glass-card p-4 d-flex flex-column">
+                            <h5 class="font-mono text-white mb-4 d-flex align-items-center gap-2 border-bottom border-accent pb-2">
+                                <span class="material-symbols-outlined fs-6 text-accent">construction</span>
+                                @group.Key
+                            </h5>
+                            
+                            <div class="d-flex flex-column gap-3">
+                                @foreach (var skill in group.OrderBy(s => s.DisplayOrder))
+                                {
+                                    <div>
+                                        <div class="d-flex justify-content-between font-mono text-muted-alt mb-1" style="font-size: 13px;">
+                                            <span>
+                                                @if (!string.IsNullOrEmpty(skill.IconClass))
+                                                {
+                                                    <i class="@skill.IconClass me-1"></i>
+                                                }
+                                                @skill.Name
+                                            </span>
+                                            <span>@skill.ProficiencyLevel%</span>
+                                        </div>
+                                        <div class="progress progress-cyber">
+                                            <div class="progress-bar progress-bar-cyber" style="width: @(skill.ProficiencyLevel)%"></div>
+                                        </div>
+                                    </div>
+                                }
                             </div>
                         </div>
                     </div>
-            
-                    <div class="col-md-4">
-                        <div class="glass-card p-4 d-flex flex-column">
-                            <h5
-                                class="font-mono text-white mb-3 d-flex align-items-center gap-2 border-top border-secondary-accent pt-2">
-                                <span class="material-symbols-outlined fs-6 text-secondary-accent">neurology</span>
-                                AI Engineering
-                            </h5>
-                            <div class="d-flex flex-wrap gap-2 mb-4">
-                                <span
-                                    class="badge border border-secondary-subtle rounded-0 font-mono text-muted-alt p-2 fw-normal">Agentic
-                                    AI</span>
-                                    <span
-                                        class="badge border border-secondary-subtle rounded-0 font-mono text-muted-alt p-2 fw-normal">RAG
-                                        Pipelines</span>
-                                    </div>
-                                    <div class="mt-auto">
-                                        <div class="progress progress-cyber">
-                                            <div class="progress-bar"
-                                                 style="width: 60%; background-color: var(--secondary-accent); box-shadow: 0 0 4px rgba(47, 248, 1, 0.5);">
-                                            </div>
-                                        </div>
-                                    </div>
+                }
+            </div>
+        }
+    </section>
+
+    <!-- Credentials Section -->
+    <section class="py-5" id="credentials">
+        <div class="section-header">
+            <span class="material-symbols-outlined fs-6">terminal</span>
+            &gt; cat credentials.json
+        </div>
+
+        @if (!Model.Credentials.Any())
+        {
+            <p class="text-muted font-mono ms-3">No credential records found in database.</p>
+        }
+        else
+        {
+            <div class="row g-4">
+                @foreach (var item in Model.Credentials)
+                {
+                    <div class="col-md-6 col-lg-4">
+                        <div class="glass-card p-4 d-flex flex-column justify-content-between">
+                            <div>
+                                <h5 class="text-white mb-1">@item.Name</h5>
+                                <div class="font-mono text-secondary-accent small mb-3">@item.IssuingAuthority</div>
+                                <div class="font-mono text-muted-alt small mb-4">
+                                    Issued: @item.IssueDate.ToString("yyyy-MM") 
+                                    @if (item.ExpiryDate.HasValue)
+                                    {
+                                        <span> | Expires: @item.ExpiryDate.Value.ToString("yyyy-MM")</span>
+                                    }
                                 </div>
                             </div>
+                            
+                            @if (!string.IsNullOrEmpty(item.VerificationUrl) || !string.IsNullOrEmpty(item.BadgeUrl))
+                            {
+                                <div class="d-flex gap-2">
+                                    @if (!string.IsNullOrEmpty(item.VerificationUrl))
+                                    {
+                                        <a href="@item.VerificationUrl" target="_blank" class="btn btn-cyber-outline py-1 px-3" style="font-size: 12px;">Verify ID</a>
+                                    }
+                                    @if (!string.IsNullOrEmpty(item.BadgeUrl))
+                                    {
+                                        <a href="@item.BadgeUrl" target="_blank" class="btn btn-cyber py-1 px-3" style="font-size: 12px;">View Badge</a>
+                                    }
+                                </div>
+                            }
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+    </section>
+
+    <!-- Timeline Section -->
+    <section class="py-5" id="timeline">
+        <div class="section-header">
+            <span class="material-symbols-outlined fs-6">terminal</span>
+            &gt; cat timeline_events.json
+        </div>
+
+        @if (!Model.TimelineEvents.Any())
+        {
+            <p class="text-muted font-mono ms-3">No timeline records found in database.</p>
+        }
+        else
+        {
+            <div class="timeline-container ms-3 mt-4">
+                @foreach (var item in Model.TimelineEvents)
+                {
+                    <div class="timeline-node">
+                        <div class="d-flex justify-content-between flex-wrap gap-2 mb-1">
+                            <h4 class="text-white mb-0">@item.Title</h4>
+                            <span class="badge-cyber font-mono" style="font-size: 0.75rem;">@item.EventType</span>
+                        </div>
+                        <div class="font-mono text-secondary-accent mb-2" style="font-size: 0.9rem;">
+                            @item.Organization
+                            @if (!string.IsNullOrEmpty(item.Location))
+                            {
+                                <span class="text-muted-alt">(@item.Location)</span>
+                            }
+                        </div>
+                        <div class="font-mono text-muted small mb-3">
+                            @item.StartDate.ToString("yyyy-MM") to @(item.EndDate?.ToString("yyyy-MM") ?? "Present")
+                        </div>
+                        @if (!string.IsNullOrEmpty(item.Description))
+                        {
+                            <p class="text-muted-alt small mb-0" style="line-height: 1.5; white-space: pre-wrap;">@item.Description</p>
+                        }
+                    </div>
+                }
+            </div>
+        }
+    </section>
+
+    <!-- Platform Profiles Section -->
+    <section class="py-5" id="profiles">
+        <div class="section-header">
+            <span class="material-symbols-outlined fs-6">terminal</span>
+            &gt; cat coding_handles.json
+        </div>
+
+        @if (!Model.PlatformProfiles.Any())
+        {
+            <p class="text-muted font-mono ms-3">No platform profile records found in database.</p>
+        }
+        else
+        {
+            <div class="row g-4">
+                @foreach (var item in Model.PlatformProfiles)
+                {
+                    <div class="col-md-6 col-lg-3">
+                        <div class="glass-card p-4 d-flex flex-column justify-content-between">
+                            <div>
+                                <h5 class="text-accent font-mono mb-2">@item.PlatformName</h5>
+                                <div class="font-mono text-white mb-1" style="font-size: 1.1rem;">
+                                    <code>@item.UserHandle</code>
+                                </div>
+                                @if (!string.IsNullOrEmpty(item.Rank))
+                                {
+                                    <div class="font-mono text-muted-alt small mb-4">Rank/Rating: @item.Rank</div>
+                                }
+                                else
+                                {
+                                    <div class="mb-4"></div>
+                                }
+                            </div>
+                            
+                            @if (!string.IsNullOrEmpty(item.ProfileUrl))
+                            {
+                                <a href="@item.ProfileUrl" target="_blank" class="btn btn-cyber-outline py-1 px-3 w-100 text-center" style="font-size: 12px;">Visit profile</a>
+                            }
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+    </section>
+
+    <!-- Contact Form Section -->
+    <section class="py-5" id="contact">
+        <div class="section-header">
+            <span class="material-symbols-outlined fs-6">terminal</span>
+            &gt; mail --compose
+        </div>
+
+        <div class="glass-card p-4 p-md-5">
+            <h3 class="text-white mb-2 font-mono">Transmission Terminal</h3>
+            <p class="text-muted-alt mb-4">Compose and submit a message packet directly to the Admin Inbox.</p>
+
+            <form asp-action="SubmitMessage" method="post" class="cyber-form mt-4">
+                <div asp-validation-summary="ModelOnly" class="auth-errors mb-3"></div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group mb-4">
+                            <label asp-for="SenderName" class="form-label">Identify Name</label>
+                            <input asp-for="SenderName" class="form-control" placeholder="E.g., Guest User" autocomplete="name" />
+                            <span asp-validation-for="SenderName" class="field-validation-error"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group mb-4">
+                            <label asp-for="SenderEmail" class="form-label">Return Address (Email)</label>
+                            <input asp-for="SenderEmail" type="email" class="form-control" placeholder="E.g., contact@visitor.com" autocomplete="email" />
+                            <span asp-validation-for="SenderEmail" class="field-validation-error"></span>
                         </div>
                     </div>
                 </div>
-            </div>
+
+                <div class="form-group mb-4">
+                    <label asp-for="Subject" class="form-label">Subject Header</label>
+                    <input asp-for="Subject" class="form-control" placeholder="E.g., Collaboration proposal" />
+                    <span asp-validation-for="Subject" class="field-validation-error"></span>
+                </div>
+
+                <div class="form-group mb-5">
+                    <label asp-for="Body" class="form-label">Message Payload</label>
+                    <textarea asp-for="Body" class="form-control" rows="6" placeholder="Type your message payload here..."></textarea>
+                    <span asp-validation-for="Body" class="field-validation-error"></span>
+                </div>
+
+                <button type="submit" class="btn btn-cyber">
+                    <span class="material-symbols-outlined align-middle me-1">send</span> Transmit Message
+                </button>
+            </form>
         </div>
     </section>
 </main>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

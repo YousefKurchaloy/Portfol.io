@@ -1,0 +1,150 @@
+@model RegisterViewModel
+
+@{
+    Layout = "_AdminAuthLayout";
+    ViewData["Title"] = "Register";
+}
+
+<div class="auth-wrapper">
+    <div class="auth-card">
+
+        <!-- Header -->
+        <div class="auth-header">
+            <a href="/" class="brand">Portfol.io</a>
+            <div class="terminal-prompt">
+                <span class="path">root@admin</span>:<span class="text-accent">~</span>$
+                <span class="cmd">useradd --create-home</span><span class="text-accent cursor-blink">_</span>
+            </div>
+        </div>
+
+        <!-- Validation Errors -->
+        @if (!ViewData.ModelState.IsValid)
+        {
+            var errors = ViewData.ModelState.Values
+                .SelectMany(v => v.Errors)
+                .Select(e => e.ErrorMessage)
+                .Where(m => !string.IsNullOrEmpty(m))
+                .ToList();
+
+            if (errors.Any())
+            {
+                <div class="auth-errors">
+                    <ul>
+                        @foreach (var error in errors)
+                        {
+                            <li>@error</li>
+                        }
+                    </ul>
+                </div>
+            }
+        }
+
+        <!-- Register Form -->
+        <form asp-area="Admin" asp-controller="Auth" asp-action="Register" method="post" class="auth-form" id="registerForm">
+
+            <div class="form-group">
+                <label asp-for="FullName" class="form-label">Full Name</label>
+                <input asp-for="FullName"
+                       class="form-control"
+                       type="text"
+                       placeholder="Yousef Kurchaloy"
+                       autocomplete="name"
+                       autofocus
+                       id="register-fullname" />
+                <span asp-validation-for="FullName" class="field-validation-error"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Email" class="form-label">Email Address</label>
+                <input asp-for="Email"
+                       class="form-control"
+                       type="email"
+                       placeholder="admin@portfol.io"
+                       autocomplete="email"
+                       id="register-email" />
+                <span asp-validation-for="Email" class="field-validation-error"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Password" class="form-label">Password</label>
+                <div class="password-wrapper">
+                    <input asp-for="Password"
+                           class="form-control"
+                           type="password"
+                           placeholder="Minimum 16 characters"
+                           autocomplete="new-password"
+                           id="register-password"
+                           oninput="updatePasswordStrength(this.value)" />
+                    <button type="button" class="password-toggle" onclick="togglePassword('register-password', this)" aria-label="Toggle password visibility">
+                        <span class="material-symbols-outlined">visibility</span>
+                    </button>
+                </div>
+                <div class="password-strength">
+                    <div class="password-strength-bar" id="strengthBar"></div>
+                </div>
+                <span asp-validation-for="Password" class="field-validation-error"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="ConfirmPassword" class="form-label">Confirm Password</label>
+                <div class="password-wrapper">
+                    <input asp-for="ConfirmPassword"
+                           class="form-control"
+                           type="password"
+                           placeholder="Re-enter password"
+                           autocomplete="new-password"
+                           id="register-confirm" />
+                    <button type="button" class="password-toggle" onclick="togglePassword('register-confirm', this)" aria-label="Toggle password visibility">
+                        <span class="material-symbols-outlined">visibility</span>
+                    </button>
+                </div>
+                <span asp-validation-for="ConfirmPassword" class="field-validation-error"></span>
+            </div>
+
+            <button type="submit" class="btn-auth" id="register-submit">
+                &gt; Create Account
+            </button>
+        </form>
+
+        <!-- Footer -->
+        <div class="auth-footer">
+            <span>Already have access? </span>
+            <a asp-area="Admin" asp-controller="Auth" asp-action="Login">&gt; Authenticate</a>
+        </div>
+
+    </div>
+</div>
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+    <script>
+        function togglePassword(inputId, btn) {
+            const input = document.getElementById(inputId);
+            const icon = btn.querySelector('.material-symbols-outlined');
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.textContent = 'visibility_off';
+            } else {
+                input.type = 'password';
+                icon.textContent = 'visibility';
+            }
+        }
+
+        function updatePasswordStrength(password) {
+            const bar = document.getElementById('strengthBar');
+            let score = 0;
+
+            if (password.length >= 8)  score++;
+            if (password.length >= 16) score++;
+            if (/[A-Z]/.test(password) && /[a-z]/.test(password)) score++;
+            if (/\d/.test(password)) score++;
+            if (/[^a-zA-Z0-9]/.test(password)) score++;
+
+            bar.className = 'password-strength-bar';
+            if (score <= 1) bar.classList.add('weak');
+            else if (score === 2) bar.classList.add('fair');
+            else if (score === 3) bar.classList.add('good');
+            else bar.classList.add('strong');
+        }
+    </script>
+}

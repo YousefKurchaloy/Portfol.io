@@ -1,0 +1,55 @@
+@model Portfolio.Models.PlatformProfile
+
+@{
+    ViewData["Title"] = "Platform Profile Details";
+}
+
+<div class="admin-page-header">
+    <h1 class="admin-page-title">
+        <span class="prompt-symbol">&gt;</span> platform_profiles --inspect --id=@Model.Id
+    </h1>
+    <a asp-action="Index" class="btn-cyber">
+        <span class="material-symbols-outlined">arrow_back</span> Back to List
+    </a>
+</div>
+
+<div class="admin-card accent-blue">
+    <div class="cyber-details-grid">
+        <div class="cyber-details-label">Platform Name</div>
+        <div class="cyber-details-value">@Model.PlatformName</div>
+    </div>
+    <div class="cyber-details-grid">
+        <div class="cyber-details-label">User Handle</div>
+        <div class="cyber-details-value"><code>@Model.UserHandle</code></div>
+    </div>
+    <div class="cyber-details-grid">
+        <div class="cyber-details-label">Rank / Rating</div>
+        <div class="cyber-details-value">@(Model.Rank ?? "N/A")</div>
+    </div>
+    <div class="cyber-details-grid">
+        <div class="cyber-details-label">Profile URL</div>
+        <div class="cyber-details-value">
+            @if (!string.IsNullOrEmpty(Model.ProfileUrl))
+            {
+                <a href="@Model.ProfileUrl" target="_blank" style="color: var(--primary-accent);">@Model.ProfileUrl</a>
+            }
+            else
+            {
+                <span class="text-muted">None</span>
+            }
+        </div>
+    </div>
+    <div class="cyber-details-grid">
+        <div class="cyber-details-label">Display Order</div>
+        <div class="cyber-details-value">@Model.DisplayOrder</div>
+    </div>
+
+    <div class="mt-4 d-flex gap-3">
+        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn-cyber btn-primary">
+            <span class="material-symbols-outlined">edit</span> Edit Profile
+        </a>
+        <a asp-action="Delete" asp-route-id="@Model.Id" class="btn-cyber btn-danger">
+            <span class="material-symbols-outlined">delete</span> Delete
+        </a>
+    </div>
+</div>

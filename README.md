@@ -31,7 +31,7 @@ This repository was developed as part of the Advanced Internet Computing course,
 erDiagram
     ApplicationUser {
         int Id PK
-        string Username
+        string UserName
         string Email
         string JobTitle
         string Bio

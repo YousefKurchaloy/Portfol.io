@@ -1,0 +1,316 @@
+/* ═══════════════════════════════════════════════
+   ADMIN AUTH STYLES — Login / Register / AccessDenied
+   Hacker-Modern aesthetic: glassmorphism, terminal cues, neon accents
+   ═══════════════════════════════════════════════ */
+
+/* ── Full-page centered container ── */
+.auth-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 2rem 1rem;
+    position: relative;
+    z-index: 10;
+}
+
+/* ── Glass card container ── */
+.auth-card {
+    background: rgba(25, 33, 34, 0.85);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--outline-variant);
+    width: 100%;
+    max-width: 460px;
+    padding: 3rem 2.5rem;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.4s ease, box-shadow 0.4s ease;
+}
+.auth-card:hover {
+    border-color: var(--primary-accent);
+    box-shadow:
+        0 0 20px rgba(0, 243, 255, 0.08),
+        0 0 60px rgba(0, 243, 255, 0.04);
+}
+
+/* ── Decorative top accent bar ── */
+.auth-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg,
+        transparent 0%,
+        var(--primary-accent) 20%,
+        var(--secondary-accent) 50%,
+        var(--primary-accent) 80%,
+        transparent 100%);
+    animation: scanline 3s ease-in-out infinite;
+}
+@keyframes scanline {
+    0%, 100% { opacity: 0.6; }
+    50% { opacity: 1; }
+}
+
+/* ── Terminal-style header ── */
+.auth-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+.auth-header .brand {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    font-size: 1.75rem;
+    color: var(--primary-accent);
+    text-decoration: none;
+    display: inline-block;
+    margin-bottom: 0.75rem;
+    letter-spacing: 0.05em;
+}
+.auth-header .terminal-prompt {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--on-surface-variant);
+    letter-spacing: 0.05em;
+}
+.auth-header .terminal-prompt .path {
+    color: var(--secondary-accent);
+}
+.auth-header .terminal-prompt .cmd {
+    color: var(--bs-body-color);
+}
+
+/* ── Form styling ── */
+.auth-form .form-group {
+    margin-bottom: 1.5rem;
+    position: relative;
+}
+.auth-form .form-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--outline-variant);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    margin-bottom: 0.4rem;
+}
+.auth-form .form-control {
+    background: rgba(13, 21, 21, 0.6);
+    border: 1px solid var(--outline-variant);
+    border-radius: 0;
+    color: var(--bs-body-color);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.875rem;
+    padding: 0.75rem 1rem;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+.auth-form .form-control:focus {
+    background: rgba(13, 21, 21, 0.8);
+    border-color: var(--primary-accent);
+    box-shadow: 0 0 0 1px rgba(0, 243, 255, 0.2);
+    color: var(--bs-body-color);
+}
+.auth-form .form-control::placeholder {
+    color: rgba(185, 202, 203, 0.3);
+    font-size: 0.8rem;
+}
+
+/* ── Password visibility toggle ── */
+.password-wrapper {
+    position: relative;
+}
+.password-wrapper .form-control {
+    padding-right: 3rem;
+}
+.password-toggle {
+    position: absolute;
+    right: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: var(--on-surface-variant);
+    cursor: pointer;
+    padding: 0;
+    line-height: 1;
+    transition: color 0.2s ease;
+}
+.password-toggle:hover {
+    color: var(--primary-accent);
+}
+.password-toggle .material-symbols-outlined {
+    font-size: 1.2rem;
+}
+
+/* ── Auth submit button ── */
+.btn-auth {
+    width: 100%;
+    background: var(--primary-accent);
+    color: #081010;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    border: none;
+    border-radius: 0;
+    padding: 0.85rem;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+.btn-auth:hover {
+    background: #6ff6ff;
+    color: #081010;
+    box-shadow: 0 0 16px rgba(0, 243, 255, 0.4);
+}
+.btn-auth:active {
+    transform: scale(0.98);
+}
+
+/* ── Checkbox styling ── */
+.auth-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+}
+.auth-checkbox input[type="checkbox"] {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 16px;
+    height: 16px;
+    border: 1px solid var(--outline-variant);
+    background: rgba(13, 21, 21, 0.6);
+    cursor: pointer;
+    position: relative;
+    flex-shrink: 0;
+    transition: all 0.2s ease;
+}
+.auth-checkbox input[type="checkbox"]:checked {
+    background: var(--primary-accent);
+    border-color: var(--primary-accent);
+}
+.auth-checkbox input[type="checkbox"]:checked::after {
+    content: '✓';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 11px;
+    color: #081010;
+    font-weight: 700;
+}
+.auth-checkbox label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--on-surface-variant);
+    cursor: pointer;
+    user-select: none;
+}
+
+/* ── Error messages ── */
+.auth-errors {
+    background: rgba(255, 0, 60, 0.08);
+    border: 1px solid rgba(255, 0, 60, 0.3);
+    padding: 0.75rem 1rem;
+    margin-bottom: 1.5rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    color: #ff6b8a;
+}
+.auth-errors ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.auth-errors li {
+    padding: 0.15rem 0;
+}
+.auth-errors li::before {
+    content: '✗ ';
+    color: #ff003c;
+}
+.field-validation-error {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    color: #ff6b8a;
+    margin-top: 0.3rem;
+    display: block;
+}
+
+/* ── Footer link ── */
+.auth-footer {
+    text-align: center;
+    margin-top: 1.75rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--outline-variant);
+}
+.auth-footer span {
+    font-family: 'Geist', sans-serif;
+    font-size: 0.8rem;
+    color: var(--on-surface-variant);
+}
+.auth-footer a {
+    color: var(--primary-accent);
+    text-decoration: none;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    font-weight: 600;
+    transition: color 0.2s ease;
+}
+.auth-footer a:hover {
+    color: var(--secondary-accent);
+}
+
+/* ── Access denied specific ── */
+.access-denied-icon {
+    font-size: 4rem;
+    color: #ff003c;
+    text-shadow: 0 0 20px rgba(255, 0, 60, 0.4);
+    margin-bottom: 1rem;
+}
+.access-denied-code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--outline-variant);
+    margin-top: 1rem;
+    padding: 0.75rem;
+    background: rgba(13, 21, 21, 0.6);
+    border: 1px solid var(--outline-variant);
+}
+
+/* ── Subtle entrance animation ── */
+@keyframes fadeSlideUp {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+.auth-card {
+    animation: fadeSlideUp 0.5s ease-out;
+}
+
+/* ── Password strength indicator ── */
+.password-strength {
+    height: 2px;
+    margin-top: 0.5rem;
+    background: var(--surface-container-high);
+    overflow: hidden;
+}
+.password-strength-bar {
+    height: 100%;
+    width: 0%;
+    transition: width 0.3s ease, background-color 0.3s ease;
+}
+.password-strength-bar.weak { width: 25%; background: #ff003c; }
+.password-strength-bar.fair { width: 50%; background: #ffaa00; }
+.password-strength-bar.good { width: 75%; background: #00f3ff; }
+.password-strength-bar.strong { width: 100%; background: #2ff801; }

@@ -1,0 +1,40 @@
+@{
+    Layout = "_AdminAuthLayout";
+    ViewData["Title"] = "Access Denied";
+}
+
+<div class="auth-wrapper">
+    <div class="auth-card" style="text-align: center;">
+
+        <!-- Icon -->
+        <div class="access-denied-icon">
+            <span class="material-symbols-outlined" style="font-size: inherit;">shield_lock</span>
+        </div>
+
+        <!-- Header -->
+        <h2 style="font-family: 'JetBrains Mono', monospace; color: #ff003c; font-size: 1.25rem; margin-bottom: 0.5rem;">
+            ACCESS DENIED
+        </h2>
+        <p style="font-family: 'Geist', sans-serif; color: var(--on-surface-variant); font-size: 0.9rem; margin-bottom: 1.5rem;">
+            You do not have sufficient privileges to access this resource.
+        </p>
+
+        <!-- Terminal output -->
+        <div class="access-denied-code">
+            <span style="color: #ff003c;">ERROR</span>
+            <span style="color: var(--on-surface-variant);">403 Forbidden</span><br />
+            <span style="color: var(--outline-variant);">Permission denied: insufficient clearance level</span>
+        </div>
+
+        <!-- Actions -->
+        <div style="margin-top: 1.75rem; display: flex; flex-direction: column; gap: 0.75rem;">
+            <a asp-area="Admin" asp-controller="Auth" asp-action="Login" class="btn-auth" style="text-decoration: none; display: block;">
+                &gt; Re-authenticate
+            </a>
+            <a href="/" style="font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; color: var(--on-surface-variant); text-decoration: none; transition: color 0.2s ease;">
+                &lt;- Return to public site
+            </a>
+        </div>
+
+    </div>
+</div>

@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -30,31 +30,17 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav mx-auto">
-                    <li class="nav-item px-3"><a class="nav-link active" href="#projects">Projects</a></li>
-                    <li class="nav-item px-3"><a class="nav-link" asp-controller="Users" asp-action="Index">Users</a>
-                    </li>
-                    <li class="nav-item px-3"><a class="nav-link" asp-controller="Projects"
-                                                     asp-action="Index">Projects</a></li>
-                        <li class="nav-item px-3"><a class="nav-link" asp-controller="Skills" asp-action="Index">Skills</a>
-                        </li>
-                        <li class="nav-item px-3"><a class="nav-link" asp-controller="TimelineEvents"
-                                                         asp-action="Index">Timeline Events</a></li>
-                            <li class="nav-item px-3"><a class="nav-link" asp-controller="Credentials"
-                                                             asp-action="Index">Credentials</a></li>
-                                <li class="nav-item px-3"><a class="nav-link" asp-controller="PlatformProfiles"
-                                                                 asp-action="Index">Platform Profiles</a></li>
-                                    <li class="nav-item px-3"><a class="nav-link" asp-controller="ContactMessages"
-                                                                     asp-action="Index">Contact Messages</a></li>
-                                        <li class="nav-item px-3"><a class="nav-link" asp-controller="ProjectSkills"
-                                                                         asp-action="Index">Project Skills (M2M)</a></li>
-                                            <li class="nav-item px-3"><a class="nav-link" asp-controller="CredentialSkills"
-                                                                             asp-action="Index">Credential Skills (M2M)</a></li>
-        
-                                            </ul>
-                                            <div class="d-flex">
-                                                <a class="btn-cyber-outline py-1 px-3" href="#" style="font-size: 14px;">&gt; Resume</a>
-                                            </div>
-                                        </div>
+                    <li class="nav-item px-3"><a class="nav-link" href="#projects">Projects</a></li>
+                    <li class="nav-item px-3"><a class="nav-link" href="#skills">Skills</a></li>
+                    <li class="nav-item px-3"><a class="nav-link" href="#credentials">Credentials</a></li>
+                    <li class="nav-item px-3"><a class="nav-link" href="#timeline">Timeline</a></li>
+                    <li class="nav-item px-3"><a class="nav-link" href="#profiles">Profiles</a></li>
+                    <li class="nav-item px-3"><a class="nav-link" href="#contact">Contact</a></li>
+                </ul>
+                <div class="d-flex">
+                    <a class="btn btn-cyber py-1 px-3" asp-area="Admin" asp-controller="Dashboard" asp-action="Index" style="font-size: 14px;">Admin Portal</a>
+                </div>
+            </div>
                                     </div>
                                 </nav>
 

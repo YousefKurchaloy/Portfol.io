@@ -1,0 +1,44 @@
+@model Portfolio.Models.Project
+
+@{
+    ViewData["Title"] = "Delete Project";
+}
+
+<div class="admin-page-header">
+    <h1 class="admin-page-title text-danger">
+        <span class="prompt-symbol">&gt;</span> project_db --delete --id=@Model.Id
+    </h1>
+    <a asp-action="Index" class="btn-cyber">
+        <span class="material-symbols-outlined">arrow_back</span> Back to List
+    </a>
+</div>
+
+<div class="admin-card accent-red">
+    <h3 class="text-danger mb-3" style="font-family: 'JetBrains Mono', monospace;">CRITICAL: IRREVERSIBLE OPERATION</h3>
+    <p class="text-light">You are about to permanently purge the following project record from the database. This action cannot be undone.</p>
+
+    <div class="my-4 p-3" style="background: rgba(13, 21, 21, 0.6); border: 1px solid rgba(255, 0, 60, 0.3);">
+        <div class="cyber-details-grid">
+            <div class="cyber-details-label">Project Title</div>
+            <div class="cyber-details-value text-danger"><strong>@Model.Title</strong></div>
+        </div>
+        <div class="cyber-details-grid">
+            <div class="cyber-details-label">Repository URL</div>
+            <div class="cyber-details-value">@(Model.RepositoryUrl ?? "None")</div>
+        </div>
+        <div class="cyber-details-grid">
+            <div class="cyber-details-label">Completion Date</div>
+            <div class="cyber-details-value">@(Model.CompletionDate?.ToString("yyyy-MM-dd") ?? "In Progress")</div>
+        </div>
+    </div>
+
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <div class="d-flex gap-3">
+            <button type="submit" class="btn-cyber btn-danger">
+                <span class="material-symbols-outlined">delete_forever</span> Confirm Purge
+            </button>
+            <a asp-action="Index" class="btn-cyber">Cancel</a>
+        </div>
+    </form>
+</div>

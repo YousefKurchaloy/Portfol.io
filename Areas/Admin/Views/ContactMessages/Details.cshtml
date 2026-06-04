@@ -1,0 +1,67 @@
+@model Portfolio.Models.ContactMessage
+
+@{
+    ViewData["Title"] = "Message Details";
+}
+
+<div class="admin-page-header">
+    <h1 class="admin-page-title">
+        <span class="prompt-symbol">&gt;</span> contact_inbox --inspect --id=@Model.Id
+    </h1>
+    <a asp-action="Index" asp-route-showArchived="@Model.IsArchived" class="btn-cyber">
+        <span class="material-symbols-outlined">arrow_back</span> Back to Inbox
+    </a>
+</div>
+
+<div class="admin-card accent-blue">
+    <div class="cyber-details-grid">
+        <div class="cyber-details-label">Sender</div>
+        <div class="cyber-details-value">
+            <strong>@Model.SenderName</strong> &lt;<a href="mailto:@Model.SenderEmail" style="color: var(--primary-accent);">@Model.SenderEmail</a>&gt;
+        </div>
+    </div>
+    <div class="cyber-details-grid">
+        <div class="cyber-details-label">Date Received</div>
+        <div class="cyber-details-value">@Model.SentDate.ToLocalTime().ToString("F")</div>
+    </div>
+    <div class="cyber-details-grid">
+        <div class="cyber-details-label">Subject</div>
+        <div class="cyber-details-value"><strong>@Model.Subject</strong></div>
+    </div>
+    <div class="cyber-details-grid">
+        <div class="cyber-details-label">Status</div>
+        <div class="cyber-details-value">
+            @if (Model.IsRead)
+            {
+                <span class="badge-cyber">Read</span>
+            }
+            else
+            {
+                <span class="badge-cyber primary">Unread</span>
+            }
+
+            @if (Model.IsArchived)
+            {
+                <span class="badge-cyber ms-2">Archived</span>
+            }
+        </div>
+    </div>
+    
+    <div class="form-group mt-4">
+        <label class="form-label" style="font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: var(--on-surface-variant);">Message Payload</label>
+        <div class="p-3" style="background: rgba(13, 21, 21, 0.6); border: 1px solid var(--outline-variant); font-family: 'Geist', sans-serif; font-size: 0.95rem; white-space: pre-wrap; line-height: 1.6; color: var(--bs-body-color);">@Model.Body</div>
+    </div>
+
+    <div class="mt-4 d-flex gap-3 align-items-center">
+        <form asp-action="ToggleArchive" asp-route-id="@Model.Id" method="post" style="margin: 0;">
+            <button type="submit" class="btn-cyber btn-primary">
+                <span class="material-symbols-outlined">@(Model.IsArchived ? "unarchive" : "archive")</span>
+                <span>@(Model.IsArchived ? "Restore to Inbox" : "Archive Message")</span>
+            </button>
+        </form>
+
+        <a asp-action="Delete" asp-route-id="@Model.Id" class="btn-cyber btn-danger">
+            <span class="material-symbols-outlined">delete</span> Delete Message
+        </a>
+    </div>
+</div>

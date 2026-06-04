@@ -1,0 +1,108 @@
+@model LoginViewModel
+
+@{
+    Layout = "_AdminAuthLayout";
+    ViewData["Title"] = "Login";
+}
+
+<div class="auth-wrapper">
+    <div class="auth-card">
+
+        <!-- Header -->
+        <div class="auth-header">
+            <a href="/" class="brand">Portfol.io</a>
+            <div class="terminal-prompt">
+                <span class="path">root@admin</span>:<span class="text-accent">~</span>$
+                <span class="cmd">sudo authenticate</span><span class="text-accent cursor-blink">_</span>
+            </div>
+        </div>
+
+        <!-- Validation Errors -->
+        @if (!ViewData.ModelState.IsValid)
+        {
+            var errors = ViewData.ModelState.Values
+                .SelectMany(v => v.Errors)
+                .Select(e => e.ErrorMessage)
+                .Where(m => !string.IsNullOrEmpty(m))
+                .ToList();
+
+            if (errors.Any())
+            {
+                <div class="auth-errors">
+                    <ul>
+                        @foreach (var error in errors)
+                        {
+                            <li>@error</li>
+                        }
+                    </ul>
+                </div>
+            }
+        }
+
+        <!-- Login Form -->
+        <form asp-area="Admin" asp-controller="Auth" asp-action="Login" method="post" class="auth-form" id="loginForm">
+            <input type="hidden" asp-for="ReturnUrl" />
+
+            <div class="form-group">
+                <label asp-for="Email" class="form-label">Email Address</label>
+                <input asp-for="Email"
+                       class="form-control"
+                       type="email"
+                       placeholder="admin@portfol.io"
+                       autocomplete="email"
+                       autofocus
+                       id="login-email" />
+                <span asp-validation-for="Email" class="field-validation-error"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Password" class="form-label">Password</label>
+                <div class="password-wrapper">
+                    <input asp-for="Password"
+                           class="form-control"
+                           type="password"
+                           placeholder="••••••••••••••••"
+                           autocomplete="current-password"
+                           id="login-password" />
+                    <button type="button" class="password-toggle" onclick="togglePassword('login-password', this)" aria-label="Toggle password visibility">
+                        <span class="material-symbols-outlined">visibility</span>
+                    </button>
+                </div>
+                <span asp-validation-for="Password" class="field-validation-error"></span>
+            </div>
+
+            <div class="auth-checkbox">
+                <input asp-for="RememberMe" type="checkbox" id="rememberMe" />
+                <label for="rememberMe">Remember this session</label>
+            </div>
+
+            <button type="submit" class="btn-auth" id="login-submit">
+                &gt; Authenticate
+            </button>
+        </form>
+
+        <!-- Footer -->
+        <div class="auth-footer">
+            <span>No credentials? </span>
+            <a asp-area="Admin" asp-controller="Auth" asp-action="Register">&gt; Initialize Account</a>
+        </div>
+
+    </div>
+</div>
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+    <script>
+        function togglePassword(inputId, btn) {
+            const input = document.getElementById(inputId);
+            const icon = btn.querySelector('.material-symbols-outlined');
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.textContent = 'visibility_off';
+            } else {
+                input.type = 'password';
+                icon.textContent = 'visibility';
+            }
+        }
+    </script>
+}

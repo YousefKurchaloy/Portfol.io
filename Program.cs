@@ -1,20 +1,20 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Portfolio.Data;
-using Portfolio.Models; // Ensure this points to where your ApplicationUser lives
+using Portfolio.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-// 1. Database Contextdotnet run
+// 1. Database Context
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // 2. ASP.NET Core Identity Configuration
 // Do NOT use AddDefaultIdentity() so we can avoid the pre-built Microsoft UI
-builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
+builder.Services.AddIdentity<ApplicationUser, IdentityRole<int>>(options =>
 {
     // Strict password policies for your admin portal
     options.Password.RequireDigit = true;
@@ -22,6 +22,11 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
     options.Password.RequireNonAlphanumeric = true;
     options.Password.RequireUppercase = true;
     options.User.RequireUniqueEmail = true;
+
+    // Lockout configuration for brute-force protection
+    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(15);
+    options.Lockout.MaxFailedAccessAttempts = 5;
+    options.Lockout.AllowedForNewUsers = true;
 })
 .AddEntityFrameworkStores<ApplicationDbContext>()
 .AddDefaultTokenProviders();
@@ -40,6 +45,52 @@ builder.Services.ConfigureApplicationCookie(options =>
 });
 
 var app = builder.Build();
+
+// 4. Seed the Admin role and default admin user on first run
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    try
+    {
+        var roleManager = services.GetRequiredService<RoleManager<IdentityRole<int>>>();
+        var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
+
+        // Ensure the "Admin" role exists
+        if (!await roleManager.RoleExistsAsync("Admin"))
+        {
+            await roleManager.CreateAsync(new IdentityRole<int> { Name = "Admin" });
+        }
+
+        // Seed a default admin if no admin user exists yet
+        var adminEmail = builder.Configuration["AdminSeed:Email"] ?? "admin@portfol.io";
+        var existingAdmin = await userManager.FindByEmailAsync(adminEmail);
+        if (existingAdmin == null)
+        {
+            var adminUser = new ApplicationUser
+            {
+                UserName = adminEmail,
+                Email = adminEmail,
+                FullName = "Portfolio Admin",
+                Bio = "Portfolio owner. Update this bio from the admin dashboard.",
+                AvailabilityStatus = EAvailabilityStatus.Building,
+                EmailConfirmed = true // Skip email confirmation for the seed user
+            };
+
+            // Use a strong default password — CHANGE THIS after first login
+            var seedPassword = builder.Configuration["AdminSeed:Password"] ?? "Admin!Portfol.io2026";
+            var result = await userManager.CreateAsync(adminUser, seedPassword);
+            if (result.Succeeded)
+            {
+                await userManager.AddToRoleAsync(adminUser, "Admin");
+            }
+        }
+    }
+    catch (Exception ex)
+    {
+        var logger = services.GetRequiredService<ILogger<Program>>();
+        logger.LogError(ex, "An error occurred while seeding the database.");
+    }
+}
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

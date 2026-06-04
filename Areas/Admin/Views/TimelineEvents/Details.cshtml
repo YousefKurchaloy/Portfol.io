@@ -1,0 +1,54 @@
+@model Portfolio.Models.TimelineEvent
+
+@{
+    ViewData["Title"] = "Timeline Event Details";
+}
+
+<div class="admin-page-header">
+    <h1 class="admin-page-title">
+        <span class="prompt-symbol">&gt;</span> timeline_log --inspect --id=@Model.Id
+    </h1>
+    <a asp-action="Index" class="btn-cyber">
+        <span class="material-symbols-outlined">arrow_back</span> Back to List
+    </a>
+</div>
+
+<div class="admin-card accent-blue">
+    <div class="cyber-details-grid">
+        <div class="cyber-details-label">Role / Event Title</div>
+        <div class="cyber-details-value">@Model.Title</div>
+    </div>
+    <div class="cyber-details-grid">
+        <div class="cyber-details-label">Organization / Inst.</div>
+        <div class="cyber-details-value">@Model.Organization</div>
+    </div>
+    <div class="cyber-details-grid">
+        <div class="cyber-details-label">Location</div>
+        <div class="cyber-details-value">@(Model.Location ?? "N/A")</div>
+    </div>
+    <div class="cyber-details-grid">
+        <div class="cyber-details-label">Event Type</div>
+        <div class="cyber-details-value"><span class="badge-cyber">@Model.EventType</span></div>
+    </div>
+    <div class="cyber-details-grid">
+        <div class="cyber-details-label">Timeframe</div>
+        <div class="cyber-details-value">@Model.StartDate.ToString("yyyy-MM-dd") to @(Model.EndDate?.ToString("yyyy-MM-dd") ?? "Present (Ongoing)")</div>
+    </div>
+    <div class="cyber-details-grid">
+        <div class="cyber-details-label">Display Order</div>
+        <div class="cyber-details-value">@Model.DisplayOrder</div>
+    </div>
+    <div class="cyber-details-grid">
+        <div class="cyber-details-label">Description</div>
+        <div class="cyber-details-value" style="white-space: pre-wrap;">@(Model.Description ?? "No description provided.")</div>
+    </div>
+
+    <div class="mt-4 d-flex gap-3">
+        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn-cyber btn-primary">
+            <span class="material-symbols-outlined">edit</span> Edit Event
+        </a>
+        <a asp-action="Delete" asp-route-id="@Model.Id" class="btn-cyber btn-danger">
+            <span class="material-symbols-outlined">delete</span> Delete
+        </a>
+    </div>
+</div>
