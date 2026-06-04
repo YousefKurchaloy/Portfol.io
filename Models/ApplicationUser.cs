@@ -1,24 +1,12 @@
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace Portfolio.Models
 {
-    [Index(nameof(Username), IsUnique = true)]
-    [Index(nameof(Email), IsUnique = true)]
-    public class ApplicationUser
+    // IdentityUser automatically gives: Id, UserName, Email, PasswordHash, SecurityStamp, etc.
+    public class ApplicationUser : IdentityUser
     {
-        [Key]
-        public int Id { get; set; }
-
-        [Required]
-        [StringLength(20, MinimumLength = 3, ErrorMessage = "Username must be between 3 and 20 characters.")]
-        [RegularExpression(@"^[a-zA-Z0-9_]+$", ErrorMessage = "Username can only contain letters, numbers, and underscores.")]
-        public required string Username { get; set; }
-
-        [Required]
-        [EmailAddress(ErrorMessage = "Invalid email format.")]
-        public required string Email { get; set; }
-
         [StringLength(100)]
         [Display(Name = "Job Title")]
         public string? JobTitle { get; set; }
@@ -30,10 +18,6 @@ namespace Portfolio.Models
 
         [Display(Name = "Availability Status")]
         public EAvailabilityStatus AvailabilityStatus { get; set; } = EAvailabilityStatus.Unavailable;
-
-        [Required]
-        [DataType(DataType.Password)]
-        public required string Password { get; set; }
 
 
         public IEnumerable<Project>? Projects { get; set; }
