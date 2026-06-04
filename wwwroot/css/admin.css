@@ -456,3 +456,26 @@
         padding: 1.5rem;
     }
 }
+
+/* ── Validation Styles (Small Red Text) ── */
+.field-validation-error {
+    font-size: 0.75rem;
+    color: #ff3355;
+    margin-top: 0.35rem;
+    display: block;
+    font-family: 'JetBrains Mono', monospace;
+}
+.validation-summary-errors {
+    color: #ff3355;
+    font-size: 0.8rem;
+    font-family: 'JetBrains Mono', monospace;
+    margin-bottom: 1.25rem;
+    padding: 0.75rem;
+    background: rgba(255, 51, 85, 0.05);
+    border: 1px solid rgba(255, 51, 85, 0.2);
+}
+.validation-summary-errors ul {
+    margin-bottom: 0;
+    padding-left: 1.2rem;
+}
+
