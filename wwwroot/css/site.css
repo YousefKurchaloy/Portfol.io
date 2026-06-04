@@ -1,12 +1,12 @@
 :root {
     --bs-body-bg: #0d1515;
-    --bs-body-color: #dce4e4;
+    --bs-body-color: #f5fafb;
     --primary-accent: #00f3ff;
     --secondary-accent: #2ff801;
     --surface-container: #192122;
     --surface-container-high: #232b2c;
     --outline-variant: #3a494b;
-    --on-surface-variant: #b9cacb;
+    --on-surface-variant: #d2e3e4;
 }
 
 body {
@@ -80,7 +80,8 @@ body {
 h1, h2, h3, h4, h5 { font-weight: 700; }
 .text-accent { color: var(--primary-accent); }
 .text-secondary-accent { color: var(--secondary-accent); }
-.text-muted-alt { color: var(--on-surface-variant); }
+.text-muted { color: #b1c3c4 !important; }
+.text-muted-alt { color: var(--on-surface-variant) !important; }
 
 /* Buttons */
 .btn-cyber {
