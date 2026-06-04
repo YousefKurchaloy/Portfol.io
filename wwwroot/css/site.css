@@ -135,6 +135,10 @@ h1, h2, h3, h4, h5 { font-weight: 700; }
     box-shadow: none;
     color: var(--bs-body-color);
 }
+.form-control::placeholder {
+    color: rgba(245, 250, 251, 0.5) !important;
+    opacity: 1; /* Override default browser opacity */
+}
 .form-label {
     font-family: 'JetBrains Mono', monospace;
     font-size: 12px;
