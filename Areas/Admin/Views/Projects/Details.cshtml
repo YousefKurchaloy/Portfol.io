@@ -79,6 +79,29 @@
         </div>
     </div>
     <div class="cyber-details-grid">
+        <div class="cyber-details-label">Skills Used</div>
+        <div class="cyber-details-value">
+            @if (Model.ProjectSkills != null && Model.ProjectSkills.Any())
+            {
+                <div class="d-flex flex-wrap gap-2">
+                    @foreach (var ps in Model.ProjectSkills)
+                    {
+                        if (ps.Skill != null)
+                        {
+                            <span class="badge border border-secondary rounded-0 font-mono text-accent small fw-normal py-1 px-2" style="font-size: 11px; background: rgba(0, 243, 255, 0.05); color: var(--primary-accent) !important;">
+                                @ps.Skill.Name
+                            </span>
+                        }
+                    }
+                </div>
+            }
+            else
+            {
+                <span class="text-muted">None selected</span>
+            }
+        </div>
+    </div>
+    <div class="cyber-details-grid">
         <div class="cyber-details-label">Description</div>
         <div class="cyber-details-value" style="white-space: pre-wrap;">@Model.Description</div>
     </div>

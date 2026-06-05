@@ -44,6 +44,8 @@ namespace Portfolio.Areas.Admin.Controllers
 
             var userId = GetCurrentUserId();
             var project = await _context.Projects
+                .Include(p => p.ProjectSkills)
+                    .ThenInclude(ps => ps.Skill)
                 .FirstOrDefaultAsync(m => m.Id == id && m.ApplicationUserId == userId);
 
             if (project == null) return NotFound();
@@ -52,15 +54,22 @@ namespace Portfolio.Areas.Admin.Controllers
         }
 
         // GET: Admin/Projects/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
+            var userId = GetCurrentUserId();
+            ViewBag.Skills = await _context.Skills
+                .Where(s => s.ApplicationUserId == userId)
+                .OrderBy(s => s.Category)
+                .ThenBy(s => s.DisplayOrder)
+                .ToListAsync();
+            ViewBag.SelectedSkillIds = new List<int>();
             return View();
         }
 
         // POST: Admin/Projects/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Title,Description,RepositoryUrl,LiveDemoUrl,ImageUrl,IsFeatured,DisplayOrder,CompletionDate")] Project project)
+        public async Task<IActionResult> Create([Bind("Title,Description,RepositoryUrl,LiveDemoUrl,ImageUrl,IsFeatured,DisplayOrder,CompletionDate")] Project project, int[] selectedSkillIds)
         {
             var userId = GetCurrentUserId();
             project.ApplicationUserId = userId;
@@ -78,8 +87,29 @@ namespace Portfolio.Areas.Admin.Controllers
             {
                 _context.Add(project);
                 await _context.SaveChangesAsync();
+
+                if (selectedSkillIds != null)
+                {
+                    foreach (var skillId in selectedSkillIds)
+                    {
+                        _context.ProjectSkills.Add(new ProjectSkill
+                        {
+                            ProjectId = project.Id,
+                            SkillId = skillId
+                        });
+                    }
+                    await _context.SaveChangesAsync();
+                }
+
                 return RedirectToAction(nameof(Index));
             }
+
+            ViewBag.Skills = await _context.Skills
+                .Where(s => s.ApplicationUserId == userId)
+                .OrderBy(s => s.Category)
+                .ThenBy(s => s.DisplayOrder)
+                .ToListAsync();
+            ViewBag.SelectedSkillIds = selectedSkillIds?.ToList() ?? new List<int>();
             return View(project);
         }
 
@@ -94,13 +124,23 @@ namespace Portfolio.Areas.Admin.Controllers
 
             if (project == null) return NotFound();
 
+            ViewBag.Skills = await _context.Skills
+                .Where(s => s.ApplicationUserId == userId)
+                .OrderBy(s => s.Category)
+                .ThenBy(s => s.DisplayOrder)
+                .ToListAsync();
+            ViewBag.SelectedSkillIds = await _context.ProjectSkills
+                .Where(ps => ps.ProjectId == project.Id)
+                .Select(ps => ps.SkillId)
+                .ToListAsync();
+
             return View(project);
         }
 
         // POST: Admin/Projects/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Description,RepositoryUrl,LiveDemoUrl,ImageUrl,IsFeatured,DisplayOrder,CompletionDate")] Project project)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Description,RepositoryUrl,LiveDemoUrl,ImageUrl,IsFeatured,DisplayOrder,CompletionDate")] Project project, int[] selectedSkillIds)
         {
             if (id != project.Id) return NotFound();
 
@@ -121,6 +161,25 @@ namespace Portfolio.Areas.Admin.Controllers
                 {
                     _context.Update(project);
                     await _context.SaveChangesAsync();
+
+                    // Update ProjectSkills
+                    var existingProjectSkills = await _context.ProjectSkills
+                        .Where(ps => ps.ProjectId == project.Id)
+                        .ToListAsync();
+                    _context.ProjectSkills.RemoveRange(existingProjectSkills);
+
+                    if (selectedSkillIds != null)
+                    {
+                        foreach (var skillId in selectedSkillIds)
+                        {
+                            _context.ProjectSkills.Add(new ProjectSkill
+                            {
+                                ProjectId = project.Id,
+                                SkillId = skillId
+                            });
+                        }
+                    }
+                    await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -129,6 +188,13 @@ namespace Portfolio.Areas.Admin.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+
+            ViewBag.Skills = await _context.Skills
+                .Where(s => s.ApplicationUserId == userId)
+                .OrderBy(s => s.Category)
+                .ThenBy(s => s.DisplayOrder)
+                .ToListAsync();
+            ViewBag.SelectedSkillIds = selectedSkillIds?.ToList() ?? new List<int>();
             return View(project);
         }
 

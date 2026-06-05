@@ -139,6 +139,21 @@
                                 </div>
                                 <p class="text-muted-alt small flex-grow-1" style="line-height: 1.5; white-space: pre-wrap;">@item.Description</p>
                                 
+                                @if (item.ProjectSkills != null && item.ProjectSkills.Any())
+                                {
+                                    <div class="d-flex flex-wrap gap-1 mb-1 mt-3">
+                                        @foreach (var ps in item.ProjectSkills)
+                                        {
+                                            if (ps.Skill != null)
+                                            {
+                                                <span class="badge border border-secondary rounded-0 font-mono text-accent small fw-normal py-1 px-2" style="font-size: 10px; background: rgba(0, 243, 255, 0.05); color: var(--primary-accent) !important;">
+                                                    @ps.Skill.Name
+                                                </span>
+                                            }
+                                        }
+                                    </div>
+                                }
+
                                 <div class="mt-4 pt-3 border-top border-secondary-subtle d-flex gap-2">
                                     @if (!string.IsNullOrEmpty(item.RepositoryUrl))
                                     {

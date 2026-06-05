@@ -53,6 +53,8 @@ public class HomeController : Controller
             model.TargetUsername = targetUser.UserName ?? string.Empty;
 
             model.Projects = await _context.Projects
+                .Include(p => p.ProjectSkills)
+                    .ThenInclude(ps => ps.Skill)
                 .Where(p => p.ApplicationUserId == targetUser.Id)
                 .OrderBy(p => p.DisplayOrder)
                 .ThenByDescending(p => p.CompletionDate)
@@ -124,6 +126,8 @@ public class HomeController : Controller
             model.TargetUsername = targetUser.UserName ?? string.Empty;
 
             model.Projects = await _context.Projects
+                .Include(p => p.ProjectSkills)
+                    .ThenInclude(ps => ps.Skill)
                 .Where(p => p.ApplicationUserId == targetUser.Id)
                 .OrderBy(p => p.DisplayOrder)
                 .ThenByDescending(p => p.CompletionDate)
