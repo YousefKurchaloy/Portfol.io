@@ -36,50 +36,7 @@ public class HomeController : Controller
         }
 
         var model = new HomeViewModel();
-
-        if (targetUser != null)
-        {
-            model.AdminUser = targetUser;
-            model.TargetUserId = targetUser.Id;
-            model.TargetUsername = targetUser.UserName ?? string.Empty;
-
-            model.Projects = await _context.Projects
-                .Include(p => p.ProjectSkills)
-                    .ThenInclude(ps => ps.Skill)
-                .AsNoTracking()
-                .Where(p => p.ApplicationUserId == targetUser.Id)
-                .OrderBy(p => p.DisplayOrder)
-                .ThenByDescending(p => p.CompletionDate)
-                .ToListAsync();
-
-            model.Skills = await _context.Skills
-                .AsNoTracking()
-                .Where(s => s.ApplicationUserId == targetUser.Id)
-                .OrderBy(s => s.Category)
-                .ThenBy(s => s.DisplayOrder)
-                .ToListAsync();
-
-            model.Credentials = await _context.Credentials
-                .Include(c => c.CredentialSkills)
-                    .ThenInclude(cs => cs.Skill)
-                .AsNoTracking()
-                .Where(c => c.ApplicationUserId == targetUser.Id)
-                .OrderByDescending(c => c.IssueDate)
-                .ToListAsync();
-
-            model.TimelineEvents = await _context.TimelineEvents
-                .AsNoTracking()
-                .Where(e => e.ApplicationUserId == targetUser.Id)
-                .OrderByDescending(e => e.StartDate)
-                .ToListAsync();
-
-            model.PlatformProfiles = await _context.PlatformProfiles
-                .AsNoTracking()
-                .Where(p => p.ApplicationUserId == targetUser.Id)
-                .OrderBy(p => p.DisplayOrder)
-                .ToListAsync();
-        }
-
+        await PopulatePortfolioDataAsync(model, targetUser);
         return View(model);
     }
 
@@ -118,48 +75,46 @@ public class HomeController : Controller
         // If validation fails, re-hydrate view model
         if (targetUser != null)
         {
-            model.AdminUser = targetUser;
-            model.TargetUserId = targetUser.Id;
-            model.TargetUsername = targetUser.UserName ?? string.Empty;
-
-            model.Projects = await _context.Projects
-                .Include(p => p.ProjectSkills)
-                    .ThenInclude(ps => ps.Skill)
-                .AsNoTracking()
-                .Where(p => p.ApplicationUserId == targetUser.Id)
-                .OrderBy(p => p.DisplayOrder)
-                .ThenByDescending(p => p.CompletionDate)
-                .ToListAsync();
-
-            model.Skills = await _context.Skills
-                .AsNoTracking()
-                .Where(s => s.ApplicationUserId == targetUser.Id)
-                .OrderBy(s => s.Category)
-                .ThenBy(s => s.DisplayOrder)
-                .ToListAsync();
-
-            model.Credentials = await _context.Credentials
-                .Include(c => c.CredentialSkills)
-                    .ThenInclude(cs => cs.Skill)
-                .AsNoTracking()
-                .Where(c => c.ApplicationUserId == targetUser.Id)
-                .OrderByDescending(c => c.IssueDate)
-                .ToListAsync();
-
-            model.TimelineEvents = await _context.TimelineEvents
-                .AsNoTracking()
-                .Where(e => e.ApplicationUserId == targetUser.Id)
-                .OrderByDescending(e => e.StartDate)
-                .ToListAsync();
-
-            model.PlatformProfiles = await _context.PlatformProfiles
-                .AsNoTracking()
-                .Where(p => p.ApplicationUserId == targetUser.Id)
-                .OrderBy(p => p.DisplayOrder)
-                .ToListAsync();
+            await PopulatePortfolioDataAsync(model, targetUser);
         }
 
         return View("Index", model);
+    }
+
+    private async Task PopulatePortfolioDataAsync(HomeViewModel model, ApplicationUser targetUser)
+    {
+        model.AdminUser = targetUser;
+        model.TargetUserId = targetUser.Id;
+        model.TargetUsername = targetUser.UserName ?? string.Empty;
+
+        model.Projects = await _context.Projects
+            .Include(p => p.ProjectSkills)
+                .ThenInclude(ps => ps.Skill)
+            .AsNoTracking()
+            .GetSortedProjectsForUser(targetUser.Id)
+            .ToListAsync();
+
+        model.Skills = await _context.Skills
+            .AsNoTracking()
+            .GetSortedSkillsForUser(targetUser.Id)
+            .ToListAsync();
+
+        model.Credentials = await _context.Credentials
+            .Include(c => c.CredentialSkills)
+                .ThenInclude(cs => cs.Skill)
+            .AsNoTracking()
+            .GetSortedCredentialsForUser(targetUser.Id)
+            .ToListAsync();
+
+        model.TimelineEvents = await _context.TimelineEvents
+            .AsNoTracking()
+            .GetSortedTimelineEventsForUser(targetUser.Id)
+            .ToListAsync();
+
+        model.PlatformProfiles = await _context.PlatformProfiles
+            .AsNoTracking()
+            .GetSortedPlatformProfilesForUser(targetUser.Id)
+            .ToListAsync();
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

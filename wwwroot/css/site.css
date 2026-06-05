@@ -218,3 +218,73 @@ main {
     margin-bottom: 0;
     padding-left: 1.2rem;
 }
+
+/* --- Refactoring: Reusable Component & Utility Classes --- */
+.bio-text {
+    line-height: 1.6;
+    white-space: pre-wrap;
+}
+
+.desc-text {
+    line-height: 1.5;
+    white-space: pre-wrap;
+}
+
+.profile-img-preview {
+    max-height: 320px;
+    filter: grayscale(30%);
+}
+
+.profile-img-overlay {
+    border: 1px solid var(--primary-accent);
+    margin: -4px;
+    pointer-events: none;
+    opacity: 0.7;
+}
+
+.glass-card-featured {
+    border-color: var(--primary-accent) !important;
+    box-shadow: 0 0 10px rgba(0, 243, 255, 0.05) !important;
+}
+
+.project-image-height {
+    height: 180px;
+}
+
+.project-img {
+    filter: grayscale(40%);
+}
+
+.bg-cyber-accent {
+    background-color: var(--primary-accent) !important;
+}
+
+.badge-skill {
+    font-size: 10px !important;
+    background: rgba(0, 243, 255, 0.05) !important;
+    color: var(--primary-accent) !important;
+}
+
+.fs-12 {
+    font-size: 12px !important;
+}
+
+.fs-13 {
+    font-size: 13px !important;
+}
+
+.fs-14 {
+    font-size: 0.9rem !important;
+}
+
+.fs-18 {
+    font-size: 1.1rem !important;
+}
+
+.w-max-150 {
+    max-width: 150px;
+}
+
+.w-max-250 {
+    max-width: 250px;
+}

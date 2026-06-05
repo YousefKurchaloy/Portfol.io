@@ -52,7 +52,7 @@
                 </div>
 
                 <div class="border-start border-2 border-secondary-subtle ps-4 mb-5">
-                    <p class="h5 text-muted-alt mb-0" style="line-height: 1.6; white-space: pre-wrap;">@Model.AdminUser.Bio</p>
+                    <p class="h5 text-muted-alt mb-0 bio-text">@Model.AdminUser.Bio</p>
                 </div>
 
                 <div class="d-flex flex-wrap gap-3">
@@ -86,8 +86,8 @@
         {
             <div class="col-lg-4 text-center mt-5 mt-lg-0">
                 <div class="position-relative d-inline-block">
-                    <img src="@Model.AdminUser.ProfileImageUrl" alt="@Model.AdminUser.FullName" class="img-fluid border border-secondary-subtle p-2 bg-dark" style="max-height: 320px; filter: grayscale(30%);" />
-                    <div class="position-absolute" style="top: 0; left: 0; right: 0; bottom: 0; border: 1px solid var(--primary-accent); margin: -4px; pointer-events: none; opacity: 0.7;"></div>
+                    <img src="@Model.AdminUser.ProfileImageUrl" alt="@Model.AdminUser.FullName" class="img-fluid border border-secondary-subtle p-2 bg-dark profile-img-preview" />
+                    <div class="position-absolute top-0 start-0 w-100 h-100 profile-img-overlay"></div>
                 </div>
             </div>
         }
@@ -119,14 +119,14 @@
                 @foreach (var item in Model.Projects)
                 {
                     <div class="col-md-6 col-lg-4">
-                        <div class="glass-card d-flex flex-column" style="@(item.IsFeatured ? "border-color: var(--primary-accent); box-shadow: 0 0 10px rgba(0,243,255,0.05);" : "")">
+                        <div class="glass-card d-flex flex-column @(item.IsFeatured ? "glass-card-featured" : "")">
                             @if (!string.IsNullOrEmpty(item.ImageUrl))
                             {
-                                <div class="project-image-wrapper position-relative overflow-hidden border-bottom border-secondary-subtle" style="height: 180px;">
-                                    <img src="@item.ImageUrl" alt="@item.Title" class="w-100 h-100 object-fit-cover" style="filter: grayscale(40%);" loading="lazy" />
+                                <div class="project-image-wrapper position-relative overflow-hidden border-bottom border-secondary-subtle project-image-height">
+                                    <img src="@item.ImageUrl" alt="@item.Title" class="w-100 h-100 object-fit-cover project-img" loading="lazy" />
                                     @if (item.IsFeatured)
                                     {
-                                        <div class="position-absolute top-0 right-0 bg-primary text-dark font-mono px-2 py-1 small fw-bold" style="background-color: var(--primary-accent) !important;">
+                                        <div class="position-absolute top-0 end-0 bg-primary text-dark font-mono px-2 py-1 small fw-bold bg-cyber-accent">
                                             FEATURED
                                         </div>
                                     }
@@ -137,7 +137,7 @@
                                 <div class="font-mono text-muted small mb-3">
                                     @(item.CompletionDate?.ToString("yyyy-MM-dd") ?? "Ongoing Project / WIP")
                                 </div>
-                                <p class="text-muted-alt small flex-grow-1" style="line-height: 1.5; white-space: pre-wrap;">@item.Description</p>
+                                <p class="text-muted-alt small flex-grow-1 desc-text">@item.Description</p>
                                 
                                 @if (item.ProjectSkills != null && item.ProjectSkills.Any())
                                 {
@@ -146,7 +146,7 @@
                                         {
                                             if (ps.Skill != null)
                                             {
-                                                <span class="badge border border-secondary rounded-0 font-mono text-accent small fw-normal py-1 px-2" style="font-size: 10px; background: rgba(0, 243, 255, 0.05); color: var(--primary-accent) !important;">
+                                                <span class="badge border border-secondary rounded-0 font-mono text-accent small fw-normal py-1 px-2 badge-skill">
                                                     @ps.Skill.Name
                                                 </span>
                                             }
@@ -157,11 +157,11 @@
                                 <div class="mt-4 pt-3 border-top border-secondary-subtle d-flex gap-2">
                                     @if (!string.IsNullOrEmpty(item.RepositoryUrl))
                                     {
-                                        <a href="@item.RepositoryUrl" target="_blank" class="btn btn-cyber-outline py-1 px-3" style="font-size: 12px;">GitHub</a>
+                                        <a href="@item.RepositoryUrl" target="_blank" class="btn btn-cyber-outline py-1 px-3 fs-12">GitHub</a>
                                     }
                                     @if (!string.IsNullOrEmpty(item.LiveDemoUrl))
                                     {
-                                        <a href="@item.LiveDemoUrl" target="_blank" class="btn btn-cyber py-1 px-3" style="font-size: 12px;">Live Demo</a>
+                                        <a href="@item.LiveDemoUrl" target="_blank" class="btn btn-cyber py-1 px-3 fs-12">Live Demo</a>
                                     }
                                 </div>
                             </div>
@@ -200,7 +200,7 @@
                                 @foreach (var skill in group.OrderBy(s => s.DisplayOrder))
                                 {
                                     <div>
-                                        <div class="d-flex justify-content-between font-mono text-muted-alt mb-1" style="font-size: 13px;">
+                                        <div class="d-flex justify-content-between font-mono text-muted-alt mb-1 fs-13">
                                             <span>
                                                 @if (!string.IsNullOrEmpty(skill.IconClass))
                                                 {
@@ -258,7 +258,7 @@
                                         {
                                             if (cs.Skill != null)
                                             {
-                                                <span class="badge border border-secondary rounded-0 font-mono text-accent small fw-normal py-1 px-2" style="font-size: 10px; background: rgba(0, 243, 255, 0.05); color: var(--primary-accent) !important;">
+                                                <span class="badge border border-secondary rounded-0 font-mono text-accent small fw-normal py-1 px-2 badge-skill">
                                                     @cs.Skill.Name
                                                 </span>
                                             }
@@ -272,11 +272,11 @@
                                 <div class="d-flex gap-2">
                                     @if (!string.IsNullOrEmpty(item.VerificationUrl))
                                     {
-                                        <a href="@item.VerificationUrl" target="_blank" class="btn btn-cyber-outline py-1 px-3" style="font-size: 12px;">Verify ID</a>
+                                        <a href="@item.VerificationUrl" target="_blank" class="btn btn-cyber-outline py-1 px-3 fs-12">Verify ID</a>
                                     }
                                     @if (!string.IsNullOrEmpty(item.BadgeUrl))
                                     {
-                                        <a href="@item.BadgeUrl" target="_blank" class="btn btn-cyber py-1 px-3" style="font-size: 12px;">View Badge</a>
+                                        <a href="@item.BadgeUrl" target="_blank" class="btn btn-cyber py-1 px-3 fs-12">View Badge</a>
                                     }
                                 </div>
                             }
@@ -306,9 +306,9 @@
                     <div class="timeline-node">
                         <div class="d-flex justify-content-between flex-wrap gap-2 mb-1">
                             <h4 class="text-white mb-0">@item.Title</h4>
-                            <span class="badge-cyber font-mono" style="font-size: 0.75rem;">@item.EventType</span>
+                            <span class="badge-cyber font-mono fs-12">@item.EventType</span>
                         </div>
-                        <div class="font-mono text-secondary-accent mb-2" style="font-size: 0.9rem;">
+                        <div class="font-mono text-secondary-accent mb-2 fs-14">
                             @item.Organization
                             @if (!string.IsNullOrEmpty(item.Location))
                             {
@@ -320,7 +320,7 @@
                         </div>
                         @if (!string.IsNullOrEmpty(item.Description))
                         {
-                            <p class="text-muted-alt small mb-0" style="line-height: 1.5; white-space: pre-wrap;">@item.Description</p>
+                            <p class="text-muted-alt small mb-0 desc-text">@item.Description</p>
                         }
                     </div>
                 }
@@ -348,7 +348,7 @@
                         <div class="glass-card p-4 d-flex flex-column justify-content-between">
                             <div>
                                 <h5 class="text-accent font-mono mb-2">@item.PlatformName</h5>
-                                <div class="font-mono text-white mb-1" style="font-size: 1.1rem;">
+                                <div class="font-mono text-white mb-1 fs-18">
                                     <code>@item.UserHandle</code>
                                 </div>
                                 @if (!string.IsNullOrEmpty(item.Rank))
@@ -363,7 +363,7 @@
                             
                             @if (!string.IsNullOrEmpty(item.ProfileUrl))
                             {
-                                <a href="@item.ProfileUrl" target="_blank" class="btn btn-cyber-outline py-1 px-3 w-100 text-center" style="font-size: 12px;">Visit profile</a>
+                                <a href="@item.ProfileUrl" target="_blank" class="btn btn-cyber-outline py-1 px-3 w-100 text-center fs-12">Visit profile</a>
                             }
                         </div>
                     </div>

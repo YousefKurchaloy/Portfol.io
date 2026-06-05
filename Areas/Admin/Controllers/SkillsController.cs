@@ -31,9 +31,7 @@ namespace Portfolio.Areas.Admin.Controllers
             var userId = GetCurrentUserId();
             var skills = await _context.Skills
                 .AsNoTracking()
-                .Where(s => s.ApplicationUserId == userId)
-                .OrderBy(s => s.Category)
-                .ThenBy(s => s.DisplayOrder)
+                .GetSortedSkillsForUser(userId)
                 .ToListAsync();
             return View(skills);
         }

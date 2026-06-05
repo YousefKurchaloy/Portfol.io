@@ -31,8 +31,7 @@ namespace Portfolio.Areas.Admin.Controllers
             var userId = GetCurrentUserId();
             var events = await _context.TimelineEvents
                 .AsNoTracking()
-                .Where(e => e.ApplicationUserId == userId)
-                .OrderByDescending(e => e.StartDate)
+                .GetSortedTimelineEventsForUser(userId)
                 .ToListAsync();
             return View(events);
         }

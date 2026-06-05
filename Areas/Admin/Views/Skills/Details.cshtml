@@ -25,9 +25,9 @@
     <div class="cyber-details-grid">
         <div class="cyber-details-label">Proficiency Level</div>
         <div class="cyber-details-value">
-            <div class="d-flex align-items-center gap-2" style="max-width: 250px;">
-                <div class="progress flex-grow-1" style="height: 8px; background: rgba(58, 73, 75, 0.4); border-radius: 0;">
-                    <div class="progress-bar" role="progressbar" style="width: @(Model.ProficiencyLevel)%; background: var(--primary-accent);" aria-valuenow="@Model.ProficiencyLevel" aria-valuemin="0" aria-valuemax="100"></div>
+            <div class="d-flex align-items-center gap-2 w-max-250">
+                <div class="progress progress-cyber flex-grow-1">
+                    <div class="progress-bar progress-bar-cyber" role="progressbar" style="width: @(Model.ProficiencyLevel)%" aria-valuenow="@Model.ProficiencyLevel" aria-valuemin="0" aria-valuemax="100"></div>
                 </div>
                 <span>@Model.ProficiencyLevel%</span>
             </div>

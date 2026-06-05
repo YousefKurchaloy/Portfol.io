@@ -31,8 +31,7 @@ namespace Portfolio.Areas.Admin.Controllers
             var userId = GetCurrentUserId();
             var profiles = await _context.PlatformProfiles
                 .AsNoTracking()
-                .Where(p => p.ApplicationUserId == userId)
-                .OrderBy(p => p.DisplayOrder)
+                .GetSortedPlatformProfilesForUser(userId)
                 .ToListAsync();
             return View(profiles);
         }

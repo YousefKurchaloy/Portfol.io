@@ -31,8 +31,7 @@ namespace Portfolio.Areas.Admin.Controllers
             var userId = GetCurrentUserId();
             var credentials = await _context.Credentials
                 .AsNoTracking()
-                .Where(c => c.ApplicationUserId == userId)
-                .OrderByDescending(c => c.IssueDate)
+                .GetSortedCredentialsForUser(userId)
                 .ToListAsync();
             return View(credentials);
         }
@@ -60,9 +59,7 @@ namespace Portfolio.Areas.Admin.Controllers
             var userId = GetCurrentUserId();
             ViewBag.Skills = await _context.Skills
                 .AsNoTracking()
-                .Where(s => s.ApplicationUserId == userId)
-                .OrderBy(s => s.Category)
-                .ThenBy(s => s.DisplayOrder)
+                .GetSortedSkillsForUser(userId)
                 .ToListAsync();
             ViewBag.SelectedSkillIds = new List<int>();
             return View();
@@ -101,9 +98,7 @@ namespace Portfolio.Areas.Admin.Controllers
 
             ViewBag.Skills = await _context.Skills
                 .AsNoTracking()
-                .Where(s => s.ApplicationUserId == userId)
-                .OrderBy(s => s.Category)
-                .ThenBy(s => s.DisplayOrder)
+                .GetSortedSkillsForUser(userId)
                 .ToListAsync();
             ViewBag.SelectedSkillIds = selectedSkillIds?.ToList() ?? new List<int>();
             return View(credential);
@@ -123,9 +118,7 @@ namespace Portfolio.Areas.Admin.Controllers
 
             ViewBag.Skills = await _context.Skills
                 .AsNoTracking()
-                .Where(s => s.ApplicationUserId == userId)
-                .OrderBy(s => s.Category)
-                .ThenBy(s => s.DisplayOrder)
+                .GetSortedSkillsForUser(userId)
                 .ToListAsync();
             ViewBag.SelectedSkillIds = await _context.CredentialSkills
                 .AsNoTracking()
@@ -184,9 +177,7 @@ namespace Portfolio.Areas.Admin.Controllers
 
             ViewBag.Skills = await _context.Skills
                 .AsNoTracking()
-                .Where(s => s.ApplicationUserId == userId)
-                .OrderBy(s => s.Category)
-                .ThenBy(s => s.DisplayOrder)
+                .GetSortedSkillsForUser(userId)
                 .ToListAsync();
             ViewBag.SelectedSkillIds = selectedSkillIds?.ToList() ?? new List<int>();
             return View(credential);
