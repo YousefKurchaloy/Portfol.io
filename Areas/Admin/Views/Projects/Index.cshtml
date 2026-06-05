@@ -13,11 +13,31 @@
     </a>
 </div>
 
-<div class="mb-4">
-    <form asp-action="Index" method="get" class="d-flex gap-2" style="max-width: 400px;">
-        <input type="text" name="SearchString" value="@ViewData["CurrentFilter"]" class="form-control bg-dark text-light border-secondary" placeholder="Search projects by title..." />
-        <button type="submit" class="btn btn-primary">Search</button>
-        <a asp-action="Index" class="btn btn-outline-secondary">Clear</a>
+<div class="mt-4 mb-5 p-3 rounded" style="background: rgba(0, 243, 255, 0.03); border: 1px dashed rgba(0, 243, 255, 0.2);">
+    <form asp-action="Index" method="get" class="d-flex align-items-center gap-3" style="max-width: 700px;">
+        
+        <div class="flex-grow-1" style="margin: 0;">
+            <input type="text" 
+                   name="SearchString" 
+                   value="@ViewData["CurrentFilter"]" 
+                   class="form-control" 
+                   placeholder="> search_projects --title..." 
+                   style="font-family: 'JetBrains Mono', monospace; 
+                          border: 1px solid var(--secondary-accent); 
+                          padding: 0.75rem 1.25rem; 
+                          background-color: rgba(0, 0, 0, 0.5); 
+                          color: #fff;" />
+        </div>
+        
+        <button type="submit" class="btn-cyber btn-primary" style="margin: 0; padding: 0.75rem 1.5rem;">
+            <span class="material-symbols-outlined align-middle" style="font-size: 1.2rem; margin-right: 6px;">search</span> 
+            Execute
+        </button>
+        
+        <a asp-action="Index" class="btn-cyber" style="margin: 0; padding: 0.75rem 1.5rem;">
+            <span class="material-symbols-outlined align-middle" style="font-size: 1.2rem; margin-right: 6px;">backspace</span> 
+            Clear
+        </a>
     </form>
 </div>
 
