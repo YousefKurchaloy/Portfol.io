@@ -33,10 +33,25 @@ erDiagram
         int Id PK
         string UserName
         string Email
+        string FullName
         string JobTitle
         string Bio
-        string Password
+        string ProfileImageUrl
+        string GitHubUrl
+        string LinkedInUrl
         int AvailabilityStatus
+        string PasswordHash
+        string NormalizedUserName
+        string NormalizedEmail
+        boolean EmailConfirmed
+        string SecurityStamp
+        string ConcurrencyStamp
+        string PhoneNumber
+        boolean PhoneNumberConfirmed
+        boolean TwoFactorEnabled
+        datetime LockoutEnd
+        boolean LockoutEnabled
+        int AccessFailedCount
     }
 
     Project {
@@ -44,8 +59,14 @@ erDiagram
         string Title
         string Description
         string RepositoryUrl
+        string LiveDemoUrl
+        string ImageUrl
+        boolean IsFeatured
+        int DisplayOrder
         datetime CompletionDate
         int ApplicationUserId FK
+        datetime CreatedAt
+        datetime UpdatedAt
     }
 
     Skill {
@@ -53,7 +74,11 @@ erDiagram
         string Name
         int Category
         int ProficiencyLevel
+        string IconClass
+        int DisplayOrder
         int ApplicationUserId FK
+        datetime CreatedAt
+        datetime UpdatedAt
     }
 
     TimelineEvent {
@@ -61,9 +86,13 @@ erDiagram
         string Title
         string Organization
         string Location
+        string Description
+        int EventType
         datetime StartDate
         datetime EndDate
         int ApplicationUserId FK
+        datetime CreatedAt
+        datetime UpdatedAt
     }
 
     Credential {
@@ -71,8 +100,12 @@ erDiagram
         string Name
         string IssuingAuthority
         datetime IssueDate
+        datetime ExpiryDate
         string VerificationUrl
+        string BadgeUrl
         int ApplicationUserId FK
+        datetime CreatedAt
+        datetime UpdatedAt
     }
 
     PlatformProfile {
@@ -80,7 +113,11 @@ erDiagram
         string PlatformName
         string UserHandle
         string Rank
+        string ProfileUrl
+        int DisplayOrder
         int ApplicationUserId FK
+        datetime CreatedAt
+        datetime UpdatedAt
     }
 
     ContactMessage {
@@ -91,7 +128,11 @@ erDiagram
         string Body
         datetime SentDate
         boolean IsRead
+        boolean IsArchived
+        datetime RepliedAt
         int ApplicationUserId FK
+        datetime CreatedAt
+        datetime UpdatedAt
     }
 
     ProjectSkill {
@@ -99,6 +140,8 @@ erDiagram
         string VersionUsed
         int ProjectId FK
         int SkillId FK
+        datetime CreatedAt
+        datetime UpdatedAt
     }
 
     CredentialSkill {
@@ -106,6 +149,8 @@ erDiagram
         boolean IsCoreFocus
         int CredentialId FK
         int SkillId FK
+        datetime CreatedAt
+        datetime UpdatedAt
     }
 
     %% Relationships
