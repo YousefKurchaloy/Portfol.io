@@ -32,8 +32,7 @@ namespace Portfolio.Areas.Admin.Controllers
             var events = await _context.TimelineEvents
                 .AsNoTracking()
                 .Where(e => e.ApplicationUserId == userId)
-                .OrderBy(e => e.DisplayOrder)
-                .ThenByDescending(e => e.StartDate)
+                .OrderByDescending(e => e.StartDate)
                 .ToListAsync();
             return View(events);
         }
@@ -62,18 +61,13 @@ namespace Portfolio.Areas.Admin.Controllers
         // POST: Admin/TimelineEvents/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Title,Organization,Location,Description,EventType,DisplayOrder,StartDate,EndDate")] TimelineEvent timelineEvent)
+        public async Task<IActionResult> Create([Bind("Title,Organization,Location,Description,EventType,StartDate,EndDate")] TimelineEvent timelineEvent)
         {
             var userId = GetCurrentUserId();
             timelineEvent.ApplicationUserId = userId;
 
             ModelState.Remove("ApplicationUser");
 
-            // Uniqueness check for DisplayOrder
-            if (await _context.TimelineEvents.AnyAsync(e => e.ApplicationUserId == userId && e.DisplayOrder == timelineEvent.DisplayOrder))
-            {
-                ModelState.AddModelError("DisplayOrder", "This Display Order is already in use by another timeline event.");
-            }
 
             if (ModelState.IsValid)
             {
@@ -102,7 +96,7 @@ namespace Portfolio.Areas.Admin.Controllers
         // POST: Admin/TimelineEvents/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Organization,Location,Description,EventType,DisplayOrder,StartDate,EndDate")] TimelineEvent timelineEvent)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Organization,Location,Description,EventType,StartDate,EndDate")] TimelineEvent timelineEvent)
         {
             if (id != timelineEvent.Id) return NotFound();
 
@@ -111,11 +105,6 @@ namespace Portfolio.Areas.Admin.Controllers
 
             ModelState.Remove("ApplicationUser");
 
-            // Uniqueness check for DisplayOrder
-            if (await _context.TimelineEvents.AnyAsync(e => e.ApplicationUserId == userId && e.DisplayOrder == timelineEvent.DisplayOrder && e.Id != timelineEvent.Id))
-            {
-                ModelState.AddModelError("DisplayOrder", "This Display Order is already in use by another timeline event.");
-            }
 
             if (ModelState.IsValid)
             {

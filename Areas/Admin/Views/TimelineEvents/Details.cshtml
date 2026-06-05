@@ -35,10 +35,6 @@
         <div class="cyber-details-value">@Model.StartDate.ToString("yyyy-MM-dd") to @(Model.EndDate?.ToString("yyyy-MM-dd") ?? "Present (Ongoing)")</div>
     </div>
     <div class="cyber-details-grid">
-        <div class="cyber-details-label">Display Order</div>
-        <div class="cyber-details-value">@Model.DisplayOrder</div>
-    </div>
-    <div class="cyber-details-grid">
         <div class="cyber-details-label">Description</div>
         <div class="cyber-details-value" style="white-space: pre-wrap;">@(Model.Description ?? "No description provided.")</div>
     </div>

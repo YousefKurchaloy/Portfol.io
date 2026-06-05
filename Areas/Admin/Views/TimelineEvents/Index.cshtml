@@ -22,7 +22,6 @@
                     <th>Organization</th>
                     <th>Type</th>
                     <th>Dates</th>
-                    <th>Order</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -30,7 +29,7 @@
                 @if (!Model.Any())
                 {
                     <tr>
-                        <td colspan="6" class="text-center text-muted">No records found. Run timeline_log --seed.</td>
+                        <td colspan="5" class="text-center text-muted">No records found. Run timeline_log --seed.</td>
                     </tr>
                 }
                 else
@@ -53,9 +52,6 @@
                             </td>
                             <td>
                                 @item.StartDate.ToString("yyyy-MM") to @(item.EndDate?.ToString("yyyy-MM") ?? "Present")
-                            </td>
-                            <td>
-                                @item.DisplayOrder
                             </td>
                             <td>
                                 <div class="d-flex gap-2">

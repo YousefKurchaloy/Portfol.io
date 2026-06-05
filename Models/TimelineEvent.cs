@@ -22,11 +22,6 @@ namespace Portfolio.Models
         [Display(Name = "Event Type")]
         public ETimelineEventType EventType { get; set; } = ETimelineEventType.Work;
 
-        [Required]
-        [Range(1, int.MaxValue, ErrorMessage = "Display Order must be a positive integer.")]
-        [Display(Name = "Display Order")]
-        public int DisplayOrder { get; set; } = 1;
-
         [DataType(DataType.Date)]
         [Display(Name = "Start Date")]
         public DateTime StartDate { get; set; }

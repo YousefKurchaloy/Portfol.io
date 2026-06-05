@@ -37,25 +37,18 @@
         </div>
 
         <div class="row">
-            <div class="col-md-4">
+            <div class="col-md-6">
                 <div class="form-group">
                     <label asp-for="Location" class="form-label">Location</label>
                     <input asp-for="Location" class="form-control" placeholder="E.g., London, UK (Remote)" />
                     <span asp-validation-for="Location" class="field-validation-error"></span>
                 </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-6">
                 <div class="form-group">
                     <label asp-for="EventType" class="form-label">Event Type</label>
                     <select asp-for="EventType" asp-items="Html.GetEnumSelectList<ETimelineEventType>()" class="form-select"></select>
                     <span asp-validation-for="EventType" class="field-validation-error"></span>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="form-group">
-                    <label asp-for="DisplayOrder" class="form-label">Display Order</label>
-                    <input asp-for="DisplayOrder" type="number" class="form-control" />
-                    <span asp-validation-for="DisplayOrder" class="field-validation-error"></span>
                 </div>
             </div>
         </div>

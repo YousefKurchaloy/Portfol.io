@@ -22,26 +22,17 @@ public class HomeController : Controller
     // GET: Home/Index
     public async Task<IActionResult> Index(string? username)
     {
-        if (!string.IsNullOrEmpty(username) && username.Equals("Home", StringComparison.OrdinalIgnoreCase))
+        if (string.IsNullOrEmpty(username) || username.Equals("Home", StringComparison.OrdinalIgnoreCase))
         {
-            return RedirectToAction(nameof(Index), new { username = (string?)null });
+            return NotFound("Portfolio username is required.");
         }
 
-        ApplicationUser? targetUser = null;
+        ApplicationUser? targetUser = await _userManager.Users
+            .FirstOrDefaultAsync(u => u.UserName == username);
 
-        if (string.IsNullOrEmpty(username))
+        if (targetUser == null)
         {
-            targetUser = (await _userManager.GetUsersInRoleAsync("Admin")).FirstOrDefault();
-        }
-        else
-        {
-            targetUser = await _userManager.Users
-                .FirstOrDefaultAsync(u => u.UserName == username);
-
-            if (targetUser == null)
-            {
-                return NotFound($"Portfolio profile for user '{username}' was not found.");
-            }
+            return NotFound($"Portfolio profile for user '{username}' was not found.");
         }
 
         var model = new HomeViewModel();
@@ -79,8 +70,7 @@ public class HomeController : Controller
             model.TimelineEvents = await _context.TimelineEvents
                 .AsNoTracking()
                 .Where(e => e.ApplicationUserId == targetUser.Id)
-                .OrderBy(e => e.DisplayOrder)
-                .ThenByDescending(e => e.StartDate)
+                .OrderByDescending(e => e.StartDate)
                 .ToListAsync();
 
             model.PlatformProfiles = await _context.PlatformProfiles
@@ -159,8 +149,7 @@ public class HomeController : Controller
             model.TimelineEvents = await _context.TimelineEvents
                 .AsNoTracking()
                 .Where(e => e.ApplicationUserId == targetUser.Id)
-                .OrderBy(e => e.DisplayOrder)
-                .ThenByDescending(e => e.StartDate)
+                .OrderByDescending(e => e.StartDate)
                 .ToListAsync();
 
             model.PlatformProfiles = await _context.PlatformProfiles
