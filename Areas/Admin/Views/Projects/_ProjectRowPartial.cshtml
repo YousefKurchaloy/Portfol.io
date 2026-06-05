@@ -1,0 +1,34 @@
+@model Portfolio.Models.Project
+
+<tr>
+    <td><strong>@Model.Title</strong></td>
+    <td>@(Model.CompletionDate?.ToString("yyyy-MM-dd") ?? "In Progress")</td>
+    <td>@Model.DisplayOrder</td>
+    <td>
+        @if (Model.IsFeatured)
+        {
+            <span class="badge-cyber featured">Featured</span>
+        }
+        else
+        {
+            <span class="badge-cyber">Standard</span>
+        }
+    </td>
+    <td>
+        @if (!string.IsNullOrEmpty(Model.RepositoryUrl))
+        {
+            <a href="@Model.RepositoryUrl" target="_blank" class="badge-cyber primary" style="text-decoration: none;">GitHub</a>
+        }
+        @if (!string.IsNullOrEmpty(Model.LiveDemoUrl))
+        {
+            <a href="@Model.LiveDemoUrl" target="_blank" class="badge-cyber active" style="text-decoration: none;">Live Demo</a>
+        }
+    </td>
+    <td>
+        <div class="d-flex gap-2">
+            <a asp-action="Details" asp-route-id="@Model.Id" class="btn-cyber btn-sm">Details</a>
+            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn-cyber btn-sm">Edit</a>
+            <a asp-action="Delete" asp-route-id="@Model.Id" class="btn-cyber btn-sm btn-danger">Delete</a>
+        </div>
+    </td>
+</tr>
