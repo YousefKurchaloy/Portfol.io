@@ -67,6 +67,8 @@ public class HomeController : Controller
                 .ToListAsync();
 
             model.Credentials = await _context.Credentials
+                .Include(c => c.CredentialSkills)
+                    .ThenInclude(cs => cs.Skill)
                 .Where(c => c.ApplicationUserId == targetUser.Id)
                 .OrderByDescending(c => c.IssueDate)
                 .ToListAsync();
@@ -140,6 +142,8 @@ public class HomeController : Controller
                 .ToListAsync();
 
             model.Credentials = await _context.Credentials
+                .Include(c => c.CredentialSkills)
+                    .ThenInclude(cs => cs.Skill)
                 .Where(c => c.ApplicationUserId == targetUser.Id)
                 .OrderByDescending(c => c.IssueDate)
                 .ToListAsync();

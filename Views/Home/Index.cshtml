@@ -251,6 +251,20 @@
                                         <span> | Expires: @item.ExpiryDate.Value.ToString("yyyy-MM")</span>
                                     }
                                 </div>
+                                @if (item.CredentialSkills != null && item.CredentialSkills.Any())
+                                {
+                                    <div class="d-flex flex-wrap gap-1 mb-4">
+                                        @foreach (var cs in item.CredentialSkills)
+                                        {
+                                            if (cs.Skill != null)
+                                            {
+                                                <span class="badge border border-secondary rounded-0 font-mono text-accent small fw-normal py-1 px-2" style="font-size: 10px; background: rgba(0, 243, 255, 0.05); color: var(--primary-accent) !important;">
+                                                    @cs.Skill.Name
+                                                </span>
+                                            }
+                                        }
+                                    </div>
+                                }
                             </div>
                             
                             @if (!string.IsNullOrEmpty(item.VerificationUrl) || !string.IsNullOrEmpty(item.BadgeUrl))

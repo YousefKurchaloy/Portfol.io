@@ -43,6 +43,8 @@ namespace Portfolio.Areas.Admin.Controllers
 
             var userId = GetCurrentUserId();
             var credential = await _context.Credentials
+                .Include(c => c.CredentialSkills)
+                    .ThenInclude(cs => cs.Skill)
                 .FirstOrDefaultAsync(m => m.Id == id && m.ApplicationUserId == userId);
 
             if (credential == null) return NotFound();
@@ -51,15 +53,22 @@ namespace Portfolio.Areas.Admin.Controllers
         }
 
         // GET: Admin/Credentials/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
+            var userId = GetCurrentUserId();
+            ViewBag.Skills = await _context.Skills
+                .Where(s => s.ApplicationUserId == userId)
+                .OrderBy(s => s.Category)
+                .ThenBy(s => s.DisplayOrder)
+                .ToListAsync();
+            ViewBag.SelectedSkillIds = new List<int>();
             return View();
         }
 
         // POST: Admin/Credentials/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Name,IssuingAuthority,IssueDate,ExpiryDate,VerificationUrl,BadgeUrl")] Credential credential)
+        public async Task<IActionResult> Create([Bind("Name,IssuingAuthority,IssueDate,ExpiryDate,VerificationUrl,BadgeUrl")] Credential credential, int[] selectedSkillIds)
         {
             var userId = GetCurrentUserId();
             credential.ApplicationUserId = userId;
@@ -70,8 +79,29 @@ namespace Portfolio.Areas.Admin.Controllers
             {
                 _context.Add(credential);
                 await _context.SaveChangesAsync();
+
+                if (selectedSkillIds != null)
+                {
+                    foreach (var skillId in selectedSkillIds)
+                    {
+                        _context.CredentialSkills.Add(new CredentialSkill
+                        {
+                            CredentialId = credential.Id,
+                            SkillId = skillId
+                        });
+                    }
+                    await _context.SaveChangesAsync();
+                }
+
                 return RedirectToAction(nameof(Index));
             }
+
+            ViewBag.Skills = await _context.Skills
+                .Where(s => s.ApplicationUserId == userId)
+                .OrderBy(s => s.Category)
+                .ThenBy(s => s.DisplayOrder)
+                .ToListAsync();
+            ViewBag.SelectedSkillIds = selectedSkillIds?.ToList() ?? new List<int>();
             return View(credential);
         }
 
@@ -86,13 +116,23 @@ namespace Portfolio.Areas.Admin.Controllers
 
             if (credential == null) return NotFound();
 
+            ViewBag.Skills = await _context.Skills
+                .Where(s => s.ApplicationUserId == userId)
+                .OrderBy(s => s.Category)
+                .ThenBy(s => s.DisplayOrder)
+                .ToListAsync();
+            ViewBag.SelectedSkillIds = await _context.CredentialSkills
+                .Where(cs => cs.CredentialId == credential.Id)
+                .Select(cs => cs.SkillId)
+                .ToListAsync();
+
             return View(credential);
         }
 
         // POST: Admin/Credentials/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,IssuingAuthority,IssueDate,ExpiryDate,VerificationUrl,BadgeUrl")] Credential credential)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,IssuingAuthority,IssueDate,ExpiryDate,VerificationUrl,BadgeUrl")] Credential credential, int[] selectedSkillIds)
         {
             if (id != credential.Id) return NotFound();
 
@@ -107,6 +147,25 @@ namespace Portfolio.Areas.Admin.Controllers
                 {
                     _context.Update(credential);
                     await _context.SaveChangesAsync();
+
+                    // Update CredentialSkills
+                    var existingCredentialSkills = await _context.CredentialSkills
+                        .Where(cs => cs.CredentialId == credential.Id)
+                        .ToListAsync();
+                    _context.CredentialSkills.RemoveRange(existingCredentialSkills);
+
+                    if (selectedSkillIds != null)
+                    {
+                        foreach (var skillId in selectedSkillIds)
+                        {
+                            _context.CredentialSkills.Add(new CredentialSkill
+                            {
+                                CredentialId = credential.Id,
+                                SkillId = skillId
+                            });
+                        }
+                    }
+                    await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -115,6 +174,13 @@ namespace Portfolio.Areas.Admin.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+
+            ViewBag.Skills = await _context.Skills
+                .Where(s => s.ApplicationUserId == userId)
+                .OrderBy(s => s.Category)
+                .ThenBy(s => s.DisplayOrder)
+                .ToListAsync();
+            ViewBag.SelectedSkillIds = selectedSkillIds?.ToList() ?? new List<int>();
             return View(credential);
         }
 
