@@ -30,6 +30,7 @@ namespace Portfolio.Areas.Admin.Controllers
         {
             var userId = GetCurrentUserId();
             var messages = await _context.ContactMessages
+                .AsNoTracking()
                 .Where(m => m.ApplicationUserId == userId && m.IsArchived == showArchived)
                 .OrderByDescending(m => m.SentDate)
                 .ToListAsync();
@@ -85,6 +86,7 @@ namespace Portfolio.Areas.Admin.Controllers
 
             var userId = GetCurrentUserId();
             var message = await _context.ContactMessages
+                .AsNoTracking()
                 .FirstOrDefaultAsync(m => m.Id == id && m.ApplicationUserId == userId);
 
             if (message == null) return NotFound();

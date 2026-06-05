@@ -30,6 +30,7 @@ namespace Portfolio.Areas.Admin.Controllers
         {
             var userId = GetCurrentUserId();
             var credentials = await _context.Credentials
+                .AsNoTracking()
                 .Where(c => c.ApplicationUserId == userId)
                 .OrderByDescending(c => c.IssueDate)
                 .ToListAsync();
@@ -45,6 +46,7 @@ namespace Portfolio.Areas.Admin.Controllers
             var credential = await _context.Credentials
                 .Include(c => c.CredentialSkills)
                     .ThenInclude(cs => cs.Skill)
+                .AsNoTracking()
                 .FirstOrDefaultAsync(m => m.Id == id && m.ApplicationUserId == userId);
 
             if (credential == null) return NotFound();
@@ -57,6 +59,7 @@ namespace Portfolio.Areas.Admin.Controllers
         {
             var userId = GetCurrentUserId();
             ViewBag.Skills = await _context.Skills
+                .AsNoTracking()
                 .Where(s => s.ApplicationUserId == userId)
                 .OrderBy(s => s.Category)
                 .ThenBy(s => s.DisplayOrder)
@@ -97,6 +100,7 @@ namespace Portfolio.Areas.Admin.Controllers
             }
 
             ViewBag.Skills = await _context.Skills
+                .AsNoTracking()
                 .Where(s => s.ApplicationUserId == userId)
                 .OrderBy(s => s.Category)
                 .ThenBy(s => s.DisplayOrder)
@@ -112,16 +116,19 @@ namespace Portfolio.Areas.Admin.Controllers
 
             var userId = GetCurrentUserId();
             var credential = await _context.Credentials
+                .AsNoTracking()
                 .FirstOrDefaultAsync(c => c.Id == id && c.ApplicationUserId == userId);
 
             if (credential == null) return NotFound();
 
             ViewBag.Skills = await _context.Skills
+                .AsNoTracking()
                 .Where(s => s.ApplicationUserId == userId)
                 .OrderBy(s => s.Category)
                 .ThenBy(s => s.DisplayOrder)
                 .ToListAsync();
             ViewBag.SelectedSkillIds = await _context.CredentialSkills
+                .AsNoTracking()
                 .Where(cs => cs.CredentialId == credential.Id)
                 .Select(cs => cs.SkillId)
                 .ToListAsync();
@@ -176,6 +183,7 @@ namespace Portfolio.Areas.Admin.Controllers
             }
 
             ViewBag.Skills = await _context.Skills
+                .AsNoTracking()
                 .Where(s => s.ApplicationUserId == userId)
                 .OrderBy(s => s.Category)
                 .ThenBy(s => s.DisplayOrder)
@@ -191,6 +199,7 @@ namespace Portfolio.Areas.Admin.Controllers
 
             var userId = GetCurrentUserId();
             var credential = await _context.Credentials
+                .AsNoTracking()
                 .FirstOrDefaultAsync(m => m.Id == id && m.ApplicationUserId == userId);
 
             if (credential == null) return NotFound();

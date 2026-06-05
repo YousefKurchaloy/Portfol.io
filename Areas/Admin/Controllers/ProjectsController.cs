@@ -30,6 +30,7 @@ namespace Portfolio.Areas.Admin.Controllers
         {
             var userId = GetCurrentUserId();
             var projects = await _context.Projects
+                .AsNoTracking()
                 .Where(p => p.ApplicationUserId == userId)
                 .OrderBy(p => p.DisplayOrder)
                 .ThenByDescending(p => p.CompletionDate)
@@ -46,6 +47,7 @@ namespace Portfolio.Areas.Admin.Controllers
             var project = await _context.Projects
                 .Include(p => p.ProjectSkills)
                     .ThenInclude(ps => ps.Skill)
+                .AsNoTracking()
                 .FirstOrDefaultAsync(m => m.Id == id && m.ApplicationUserId == userId);
 
             if (project == null) return NotFound();
@@ -58,6 +60,7 @@ namespace Portfolio.Areas.Admin.Controllers
         {
             var userId = GetCurrentUserId();
             ViewBag.Skills = await _context.Skills
+                .AsNoTracking()
                 .Where(s => s.ApplicationUserId == userId)
                 .OrderBy(s => s.Category)
                 .ThenBy(s => s.DisplayOrder)
@@ -105,6 +108,7 @@ namespace Portfolio.Areas.Admin.Controllers
             }
 
             ViewBag.Skills = await _context.Skills
+                .AsNoTracking()
                 .Where(s => s.ApplicationUserId == userId)
                 .OrderBy(s => s.Category)
                 .ThenBy(s => s.DisplayOrder)
@@ -120,16 +124,19 @@ namespace Portfolio.Areas.Admin.Controllers
 
             var userId = GetCurrentUserId();
             var project = await _context.Projects
+                .AsNoTracking()
                 .FirstOrDefaultAsync(p => p.Id == id && p.ApplicationUserId == userId);
 
             if (project == null) return NotFound();
 
             ViewBag.Skills = await _context.Skills
+                .AsNoTracking()
                 .Where(s => s.ApplicationUserId == userId)
                 .OrderBy(s => s.Category)
                 .ThenBy(s => s.DisplayOrder)
                 .ToListAsync();
             ViewBag.SelectedSkillIds = await _context.ProjectSkills
+                .AsNoTracking()
                 .Where(ps => ps.ProjectId == project.Id)
                 .Select(ps => ps.SkillId)
                 .ToListAsync();
@@ -190,6 +197,7 @@ namespace Portfolio.Areas.Admin.Controllers
             }
 
             ViewBag.Skills = await _context.Skills
+                .AsNoTracking()
                 .Where(s => s.ApplicationUserId == userId)
                 .OrderBy(s => s.Category)
                 .ThenBy(s => s.DisplayOrder)
@@ -205,6 +213,7 @@ namespace Portfolio.Areas.Admin.Controllers
 
             var userId = GetCurrentUserId();
             var project = await _context.Projects
+                .AsNoTracking()
                 .FirstOrDefaultAsync(m => m.Id == id && m.ApplicationUserId == userId);
 
             if (project == null) return NotFound();

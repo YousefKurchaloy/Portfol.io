@@ -30,6 +30,7 @@ namespace Portfolio.Areas.Admin.Controllers
         {
             var userId = GetCurrentUserId();
             var profiles = await _context.PlatformProfiles
+                .AsNoTracking()
                 .Where(p => p.ApplicationUserId == userId)
                 .OrderBy(p => p.DisplayOrder)
                 .ToListAsync();
@@ -43,6 +44,7 @@ namespace Portfolio.Areas.Admin.Controllers
 
             var userId = GetCurrentUserId();
             var profile = await _context.PlatformProfiles
+                .AsNoTracking()
                 .FirstOrDefaultAsync(m => m.Id == id && m.ApplicationUserId == userId);
 
             if (profile == null) return NotFound();
@@ -88,6 +90,7 @@ namespace Portfolio.Areas.Admin.Controllers
 
             var userId = GetCurrentUserId();
             var profile = await _context.PlatformProfiles
+                .AsNoTracking()
                 .FirstOrDefaultAsync(p => p.Id == id && p.ApplicationUserId == userId);
 
             if (profile == null) return NotFound();
@@ -137,6 +140,7 @@ namespace Portfolio.Areas.Admin.Controllers
 
             var userId = GetCurrentUserId();
             var profile = await _context.PlatformProfiles
+                .AsNoTracking()
                 .FirstOrDefaultAsync(m => m.Id == id && m.ApplicationUserId == userId);
 
             if (profile == null) return NotFound();

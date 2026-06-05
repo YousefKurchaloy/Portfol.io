@@ -123,7 +123,7 @@
                             @if (!string.IsNullOrEmpty(item.ImageUrl))
                             {
                                 <div class="project-image-wrapper position-relative overflow-hidden border-bottom border-secondary-subtle" style="height: 180px;">
-                                    <img src="@item.ImageUrl" alt="@item.Title" class="w-100 h-100 object-fit-cover" style="filter: grayscale(40%);" />
+                                    <img src="@item.ImageUrl" alt="@item.Title" class="w-100 h-100 object-fit-cover" style="filter: grayscale(40%);" loading="lazy" />
                                     @if (item.IsFeatured)
                                     {
                                         <div class="position-absolute top-0 right-0 bg-primary text-dark font-mono px-2 py-1 small fw-bold" style="background-color: var(--primary-accent) !important;">

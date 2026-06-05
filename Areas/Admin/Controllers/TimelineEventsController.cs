@@ -30,6 +30,7 @@ namespace Portfolio.Areas.Admin.Controllers
         {
             var userId = GetCurrentUserId();
             var events = await _context.TimelineEvents
+                .AsNoTracking()
                 .Where(e => e.ApplicationUserId == userId)
                 .OrderBy(e => e.DisplayOrder)
                 .ThenByDescending(e => e.StartDate)
@@ -44,6 +45,7 @@ namespace Portfolio.Areas.Admin.Controllers
 
             var userId = GetCurrentUserId();
             var timelineEvent = await _context.TimelineEvents
+                .AsNoTracking()
                 .FirstOrDefaultAsync(m => m.Id == id && m.ApplicationUserId == userId);
 
             if (timelineEvent == null) return NotFound();
@@ -89,6 +91,7 @@ namespace Portfolio.Areas.Admin.Controllers
 
             var userId = GetCurrentUserId();
             var timelineEvent = await _context.TimelineEvents
+                .AsNoTracking()
                 .FirstOrDefaultAsync(e => e.Id == id && e.ApplicationUserId == userId);
 
             if (timelineEvent == null) return NotFound();
@@ -138,6 +141,7 @@ namespace Portfolio.Areas.Admin.Controllers
 
             var userId = GetCurrentUserId();
             var timelineEvent = await _context.TimelineEvents
+                .AsNoTracking()
                 .FirstOrDefaultAsync(m => m.Id == id && m.ApplicationUserId == userId);
 
             if (timelineEvent == null) return NotFound();

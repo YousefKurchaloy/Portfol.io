@@ -35,6 +35,7 @@ namespace Portfolio.Areas.Admin.Controllers
 
             // Get recent projects
             var recentProjects = await _context.Projects
+                .AsNoTracking()
                 .Where(p => p.ApplicationUserId == userId)
                 .OrderByDescending(p => p.CreatedAt)
                 .Take(5)
@@ -42,6 +43,7 @@ namespace Portfolio.Areas.Admin.Controllers
 
             // Get recent messages
             var recentMessages = await _context.ContactMessages
+                .AsNoTracking()
                 .Where(m => m.ApplicationUserId == userId && !m.IsArchived)
                 .OrderByDescending(m => m.SentDate)
                 .Take(5)

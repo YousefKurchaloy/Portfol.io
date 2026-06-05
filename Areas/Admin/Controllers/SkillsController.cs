@@ -30,6 +30,7 @@ namespace Portfolio.Areas.Admin.Controllers
         {
             var userId = GetCurrentUserId();
             var skills = await _context.Skills
+                .AsNoTracking()
                 .Where(s => s.ApplicationUserId == userId)
                 .OrderBy(s => s.Category)
                 .ThenBy(s => s.DisplayOrder)
@@ -44,6 +45,7 @@ namespace Portfolio.Areas.Admin.Controllers
 
             var userId = GetCurrentUserId();
             var skill = await _context.Skills
+                .AsNoTracking()
                 .FirstOrDefaultAsync(m => m.Id == id && m.ApplicationUserId == userId);
 
             if (skill == null) return NotFound();
@@ -89,6 +91,7 @@ namespace Portfolio.Areas.Admin.Controllers
 
             var userId = GetCurrentUserId();
             var skill = await _context.Skills
+                .AsNoTracking()
                 .FirstOrDefaultAsync(s => s.Id == id && s.ApplicationUserId == userId);
 
             if (skill == null) return NotFound();
@@ -138,6 +141,7 @@ namespace Portfolio.Areas.Admin.Controllers
 
             var userId = GetCurrentUserId();
             var skill = await _context.Skills
+                .AsNoTracking()
                 .FirstOrDefaultAsync(m => m.Id == id && m.ApplicationUserId == userId);
 
             if (skill == null) return NotFound();

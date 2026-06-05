@@ -55,12 +55,14 @@ public class HomeController : Controller
             model.Projects = await _context.Projects
                 .Include(p => p.ProjectSkills)
                     .ThenInclude(ps => ps.Skill)
+                .AsNoTracking()
                 .Where(p => p.ApplicationUserId == targetUser.Id)
                 .OrderBy(p => p.DisplayOrder)
                 .ThenByDescending(p => p.CompletionDate)
                 .ToListAsync();
 
             model.Skills = await _context.Skills
+                .AsNoTracking()
                 .Where(s => s.ApplicationUserId == targetUser.Id)
                 .OrderBy(s => s.Category)
                 .ThenBy(s => s.DisplayOrder)
@@ -69,17 +71,20 @@ public class HomeController : Controller
             model.Credentials = await _context.Credentials
                 .Include(c => c.CredentialSkills)
                     .ThenInclude(cs => cs.Skill)
+                .AsNoTracking()
                 .Where(c => c.ApplicationUserId == targetUser.Id)
                 .OrderByDescending(c => c.IssueDate)
                 .ToListAsync();
 
             model.TimelineEvents = await _context.TimelineEvents
+                .AsNoTracking()
                 .Where(e => e.ApplicationUserId == targetUser.Id)
                 .OrderBy(e => e.DisplayOrder)
                 .ThenByDescending(e => e.StartDate)
                 .ToListAsync();
 
             model.PlatformProfiles = await _context.PlatformProfiles
+                .AsNoTracking()
                 .Where(p => p.ApplicationUserId == targetUser.Id)
                 .OrderBy(p => p.DisplayOrder)
                 .ToListAsync();
@@ -130,12 +135,14 @@ public class HomeController : Controller
             model.Projects = await _context.Projects
                 .Include(p => p.ProjectSkills)
                     .ThenInclude(ps => ps.Skill)
+                .AsNoTracking()
                 .Where(p => p.ApplicationUserId == targetUser.Id)
                 .OrderBy(p => p.DisplayOrder)
                 .ThenByDescending(p => p.CompletionDate)
                 .ToListAsync();
 
             model.Skills = await _context.Skills
+                .AsNoTracking()
                 .Where(s => s.ApplicationUserId == targetUser.Id)
                 .OrderBy(s => s.Category)
                 .ThenBy(s => s.DisplayOrder)
@@ -144,17 +151,20 @@ public class HomeController : Controller
             model.Credentials = await _context.Credentials
                 .Include(c => c.CredentialSkills)
                     .ThenInclude(cs => cs.Skill)
+                .AsNoTracking()
                 .Where(c => c.ApplicationUserId == targetUser.Id)
                 .OrderByDescending(c => c.IssueDate)
                 .ToListAsync();
 
             model.TimelineEvents = await _context.TimelineEvents
+                .AsNoTracking()
                 .Where(e => e.ApplicationUserId == targetUser.Id)
                 .OrderBy(e => e.DisplayOrder)
                 .ThenByDescending(e => e.StartDate)
                 .ToListAsync();
 
             model.PlatformProfiles = await _context.PlatformProfiles
+                .AsNoTracking()
                 .Where(p => p.ApplicationUserId == targetUser.Id)
                 .OrderBy(p => p.DisplayOrder)
                 .ToListAsync();
