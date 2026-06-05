@@ -240,6 +240,7 @@
 }
 
 .btn-cyber:hover {
+    background: rgba(0, 243, 255, 0.08);
     border-color: var(--primary-accent);
     color: var(--primary-accent);
     box-shadow: 0 0 10px rgba(0, 243, 255, 0.1);
