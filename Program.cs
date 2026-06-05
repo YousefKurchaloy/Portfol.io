@@ -120,7 +120,7 @@ app.MapControllerRoute(
 
 app.MapControllerRoute(
     name: "user_portfolio",
-    pattern: "u/{username}",
+    pattern: "{username}",
     defaults: new { controller = "Home", action = "Index" });
 
 app.MapControllerRoute(

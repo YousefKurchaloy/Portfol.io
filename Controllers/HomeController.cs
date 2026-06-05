@@ -22,6 +22,11 @@ public class HomeController : Controller
     // GET: Home/Index
     public async Task<IActionResult> Index(string? username)
     {
+        if (!string.IsNullOrEmpty(username) && username.Equals("Home", StringComparison.OrdinalIgnoreCase))
+        {
+            return RedirectToAction(nameof(Index), new { username = (string?)null });
+        }
+
         ApplicationUser? targetUser = null;
 
         if (string.IsNullOrEmpty(username))
