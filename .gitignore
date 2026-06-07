@@ -3,6 +3,10 @@
 ##
 ## Get latest from `dotnet new gitignore`
 
+# docs
+/SYSTEM_DOCUMENTATION.md
+
+    
 # dotenv files
 .env
 

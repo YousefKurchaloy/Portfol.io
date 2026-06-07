@@ -151,10 +151,6 @@ namespace Portfolio.Areas.Admin.Controllers
             return View(model);
         }
 
-        // ─────────────────────────────────────────────
-        // LOGOUT
-        // ─────────────────────────────────────────────
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Logout()
@@ -162,8 +158,7 @@ namespace Portfolio.Areas.Admin.Controllers
             await _signInManager.SignOutAsync();
             _logger.LogInformation("Admin session terminated.");
 
-            // Redirect back to the public-facing portfolio homepage
-            return RedirectToAction("Index", "Home", new { area = "" });
+            return RedirectToAction("Login", "Auth", new { area = "Admin" });
         }
 
         // ─────────────────────────────────────────────
