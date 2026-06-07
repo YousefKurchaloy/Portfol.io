@@ -26,13 +26,21 @@ namespace Portfolio.Areas.Admin.Controllers
         }
 
         // GET: Admin/Projects
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchString)
         {
             var userId = GetCurrentUserId();
-            var projects = await _context.Projects
-                .AsNoTracking()
+            var projectsQuery = _context.Projects.AsNoTracking();
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                projectsQuery = projectsQuery.Where(p => p.Title.Contains(searchString) || p.Description.Contains(searchString));
+            }
+
+            var projects = await projectsQuery
                 .GetSortedProjectsForUser(userId)
                 .ToListAsync();
+
+            ViewData["CurrentFilter"] = searchString;
             return View(projects);
         }
 

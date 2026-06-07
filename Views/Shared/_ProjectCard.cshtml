@@ -1,0 +1,51 @@
+@model Portfolio.Models.Project
+
+<div class="col-md-6 col-lg-4">
+    <div class="glass-card d-flex flex-column @(Model.IsFeatured ? "glass-card-featured" : "")">
+        @if (!string.IsNullOrEmpty(Model.ImageUrl))
+        {
+            <div class="project-image-wrapper position-relative overflow-hidden border-bottom border-secondary-subtle project-image-height">
+                <img src="@Model.ImageUrl" alt="@Model.Title" class="w-100 h-100 object-fit-cover project-img" loading="lazy" />
+                @if (Model.IsFeatured)
+                {
+                    <div class="position-absolute top-0 end-0 bg-primary text-dark font-mono px-2 py-1 small fw-bold bg-cyber-accent">
+                        FEATURED
+                    </div>
+                }
+            </div>
+        }
+        <div class="p-4 flex-grow-1 d-flex flex-column">
+            <h4 class="text-white mb-1">@Model.Title</h4>
+            <div class="font-mono text-muted small mb-3">
+                @(Model.CompletionDate?.ToString("yyyy-MM-dd") ?? "Ongoing Project / WIP")
+            </div>
+            <p class="text-muted-alt small flex-grow-1 desc-text">@Model.Description</p>
+            
+            @if (Model.ProjectSkills != null && Model.ProjectSkills.Any())
+            {
+                <div class="d-flex flex-wrap gap-1 mb-1 mt-3">
+                    @foreach (var ps in Model.ProjectSkills)
+                    {
+                        if (ps.Skill != null)
+                        {
+                            <span class="badge border border-secondary rounded-0 font-mono text-accent small fw-normal py-1 px-2 badge-skill">
+                                @ps.Skill.Name
+                            </span>
+                        }
+                    }
+                </div>
+            }
+
+            <div class="mt-4 pt-3 border-top border-secondary-subtle d-flex gap-2">
+                @if (!string.IsNullOrEmpty(Model.RepositoryUrl))
+                {
+                    <a href="@Model.RepositoryUrl" target="_blank" class="btn btn-cyber-outline py-1 px-3 fs-12">GitHub</a>
+                }
+                @if (!string.IsNullOrEmpty(Model.LiveDemoUrl))
+                {
+                    <a href="@Model.LiveDemoUrl" target="_blank" class="btn btn-cyber py-1 px-3 fs-12">Live Demo</a>
+                }
+            </div>
+        </div>
+    </div>
+</div>
