@@ -39,18 +39,18 @@ erDiagram
         string ProfileImageUrl
         string GitHubUrl
         string LinkedInUrl
-        int AvailabilityStatus
+        EAvailabilityStatus AvailabilityStatus
         string PasswordHash
         string NormalizedUserName
         string NormalizedEmail
-        boolean EmailConfirmed
+        bool EmailConfirmed
         string SecurityStamp
         string ConcurrencyStamp
         string PhoneNumber
-        boolean PhoneNumberConfirmed
-        boolean TwoFactorEnabled
-        datetime LockoutEnd
-        boolean LockoutEnabled
+        bool PhoneNumberConfirmed
+        bool TwoFactorEnabled
+        DateTimeOffset LockoutEnd
+        bool LockoutEnabled
         int AccessFailedCount
     }
 
@@ -61,24 +61,24 @@ erDiagram
         string RepositoryUrl
         string LiveDemoUrl
         string ImageUrl
-        boolean IsFeatured
+        bool IsFeatured
         int DisplayOrder
-        datetime CompletionDate
+        DateTime CompletionDate
         int ApplicationUserId FK
-        datetime CreatedAt
-        datetime UpdatedAt
+        DateTime CreatedAt
+        DateTime UpdatedAt
     }
 
     Skill {
         int Id PK
         string Name
-        int Category
+        ESkillCategory Category
         int ProficiencyLevel
         string IconClass
         int DisplayOrder
         int ApplicationUserId FK
-        datetime CreatedAt
-        datetime UpdatedAt
+        DateTime CreatedAt
+        DateTime UpdatedAt
     }
 
     TimelineEvent {
@@ -87,25 +87,25 @@ erDiagram
         string Organization
         string Location
         string Description
-        int EventType
-        datetime StartDate
-        datetime EndDate
+        ETimelineEventType EventType
+        DateTime StartDate
+        DateTime EndDate
         int ApplicationUserId FK
-        datetime CreatedAt
-        datetime UpdatedAt
+        DateTime CreatedAt
+        DateTime UpdatedAt
     }
 
     Credential {
         int Id PK
         string Name
         string IssuingAuthority
-        datetime IssueDate
-        datetime ExpiryDate
+        DateTime IssueDate
+        DateTime ExpiryDate
         string VerificationUrl
         string BadgeUrl
         int ApplicationUserId FK
-        datetime CreatedAt
-        datetime UpdatedAt
+        DateTime CreatedAt
+        DateTime UpdatedAt
     }
 
     PlatformProfile {
@@ -116,8 +116,8 @@ erDiagram
         string ProfileUrl
         int DisplayOrder
         int ApplicationUserId FK
-        datetime CreatedAt
-        datetime UpdatedAt
+        DateTime CreatedAt
+        DateTime UpdatedAt
     }
 
     ContactMessage {
@@ -126,13 +126,13 @@ erDiagram
         string SenderEmail
         string Subject
         string Body
-        datetime SentDate
-        boolean IsRead
-        boolean IsArchived
-        datetime RepliedAt
+        DateTime SentDate
+        bool IsRead
+        bool IsArchived
+        DateTime RepliedAt
         int ApplicationUserId FK
-        datetime CreatedAt
-        datetime UpdatedAt
+        DateTime CreatedAt
+        DateTime UpdatedAt
     }
 
     ProjectSkill {
@@ -140,17 +140,17 @@ erDiagram
         string VersionUsed
         int ProjectId FK
         int SkillId FK
-        datetime CreatedAt
-        datetime UpdatedAt
+        DateTime CreatedAt
+        DateTime UpdatedAt
     }
 
     CredentialSkill {
         int Id PK
-        boolean IsCoreFocus
+        bool IsCoreFocus
         int CredentialId FK
         int SkillId FK
-        datetime CreatedAt
-        datetime UpdatedAt
+        DateTime CreatedAt
+        DateTime UpdatedAt
     }
 
     %% Relationships
