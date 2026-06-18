@@ -13,17 +13,14 @@ builder.Services.AddResponseCompression(options =>
     options.EnableForHttps = true;
 });
 
-// 1. Database Context
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// 2. ASP.NET Core Identity Configuration
-// Do NOT use AddDefaultIdentity() so we can avoid the pre-built Microsoft UI
+
 builder.Services.AddIdentity<ApplicationUser, IdentityRole<int>>(options =>
 {
-    // Strict password policies for your admin portal
     options.Password.RequireDigit = true;
-    options.Password.RequiredLength = 16;
+    options.Password.RequiredLength = 8;
     options.Password.RequireNonAlphanumeric = true;
     options.Password.RequireUppercase = true;
     options.User.RequireUniqueEmail = true;
@@ -36,7 +33,6 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole<int>>(options =>
 .AddEntityFrameworkStores<ApplicationDbContext>()
 .AddDefaultTokenProviders();
 
-// 3. Custom Cookie Configuration
 builder.Services.ConfigureApplicationCookie(options =>
 {
     options.Cookie.Name = "Portfolio.AdminAuth";
@@ -83,7 +79,6 @@ using (var scope = app.Services.CreateScope())
                 EmailConfirmed = true // Skip email confirmation for the seed user
             };
 
-            // Use a strong default password — CHANGE THIS after first login
             var seedPassword = builder.Configuration["AdminSeed:Password"] ?? "Admin!Portfol.io2026";
             var result = await userManager.CreateAsync(adminUser, seedPassword);
             if (result.Succeeded)
@@ -120,7 +115,6 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
-// 5. Map routing to support the Admin Area boundary alongside public routes
 app.MapControllerRoute(
     name: "areas",
     pattern: "{area:exists}/{controller=Dashboard}/{action=Index}/{id?}");
